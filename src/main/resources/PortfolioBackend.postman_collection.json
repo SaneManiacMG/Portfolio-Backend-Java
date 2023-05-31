@@ -1,0 +1,260 @@
+{
+	"info": {
+		"_postman_id": "308b6791-8f07-4edc-913e-6aa586acfbcc",
+		"name": "PortfolioBackend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11619615"
+	},
+	"item": [
+		{
+			"name": "getAllUsers",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"TEST\": \"TEST\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/users/getAllUsers",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"getAllUsers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Test\",\r\n    \"lastName\": \"Acc\",\r\n    \"username\": \"user23\",\r\n    \"email\": \"test@email.com\",\r\n    \"phoneNr\": \"0123456789\",\r\n    \"role\": \"test\",\r\n    \"active\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/users/addUser",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"addUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findById",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\": 582830091101\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/users/findById",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"findById"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findByUsername",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"user23\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/users/findByUsername",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"findByUsername"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findByEmail",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"test@email.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/users/findByEmail",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"findByEmail"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\": \"584357220812\",\r\n    \"username\": \"dummy2user\",\r\n    \"firstName\": \"Test\",\r\n    \"lastName\": \"Acc\",\r\n    \"email\": \"update1@email.com\",\r\n    \"phoneNr\": \"0123456789\",\r\n    \"role\": \"test\",\r\n    \"active\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/users/updateUser",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"updateUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\" : 625256220812\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/users/deleteUser",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"deleteUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "loginUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userIdentifier\": \"SaneManiacMG\",\r\n    \"password\": \"p@ssw0rd1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "registerUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"added\",\r\n    \"lastName\": \"user\",\r\n    \"username\": \"newUser\",\r\n    \"email\": \"new@user.com\",\r\n    \"phoneNr\": \"1234567890\",\r\n    \"role\": \"test\",\r\n    \"active\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/registerUser",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"registerUser"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
