@@ -1,7 +1,7 @@
 package com.smworks.backendportfolio.controllers;
 
 import com.smworks.backendportfolio.models.User;
-import com.smworks.backendportfolio.services.UserService;
+import com.smworks.backendportfolio.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

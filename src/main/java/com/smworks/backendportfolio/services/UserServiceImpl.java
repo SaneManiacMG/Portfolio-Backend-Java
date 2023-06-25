@@ -1,5 +1,6 @@
 package com.smworks.backendportfolio.services;
 
+import com.smworks.backendportfolio.interfaces.UserService;
 import com.smworks.backendportfolio.models.User;
 import com.smworks.backendportfolio.repositories.UserRepository;
 import org.springframework.http.HttpStatus;

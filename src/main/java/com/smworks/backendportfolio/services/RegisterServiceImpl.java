@@ -1,5 +1,7 @@
 package com.smworks.backendportfolio.services;
 
+import com.smworks.backendportfolio.interfaces.RegisterService;
+import com.smworks.backendportfolio.interfaces.UserService;
 import com.smworks.backendportfolio.models.Login;
 import com.smworks.backendportfolio.models.RegisterRequest;
 import com.smworks.backendportfolio.models.User;

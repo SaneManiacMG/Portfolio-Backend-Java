@@ -1,7 +1,7 @@
 package com.smworks.backendportfolio.controllers;
 
 import com.smworks.backendportfolio.models.RegisterRequest;
-import com.smworks.backendportfolio.services.RegisterService;
+import com.smworks.backendportfolio.interfaces.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

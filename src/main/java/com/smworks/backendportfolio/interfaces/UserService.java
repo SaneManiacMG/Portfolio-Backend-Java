@@ -1,4 +1,4 @@
-package com.smworks.backendportfolio.services;
+package com.smworks.backendportfolio.interfaces;
 
 import com.smworks.backendportfolio.models.User;
 import org.springframework.http.ResponseEntity;

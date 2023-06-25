@@ -1,6 +1,7 @@
 package com.smworks.backendportfolio.services;
 
 import com.smworks.backendportfolio.filters.JwtRequestFiler;
+import com.smworks.backendportfolio.interfaces.LoginService;
 import com.smworks.backendportfolio.models.Login;
 import com.smworks.backendportfolio.models.LoginRequest;
 import com.smworks.backendportfolio.models.LoginResponse;
