@@ -1,15 +1,8 @@
 package com.smworks.backendportfolio.repositories;
 
-import com.smworks.backendportfolio.models.User;
+import com.smworks.backendportfolio.models.entities.UserDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
-public interface UserRepository extends JpaRepository<User, String> {
-
-    Optional<User> findByEmail(String email);
-
-    Optional<User> findByUsername(String username);
-}
+public interface UserRepository extends JpaRepository<UserDetails, String> { }
