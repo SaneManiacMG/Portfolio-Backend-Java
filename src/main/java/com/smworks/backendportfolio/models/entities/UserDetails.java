@@ -1,16 +1,17 @@
 package com.smworks.backendportfolio.models.entities;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Table;
 
-@EqualsAndHashCode(callSuper = true)
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "users")
-@Data
 public class UserDetails extends User {
     @Column(unique = true)
     String username;
@@ -26,10 +27,6 @@ public class UserDetails extends User {
 
     @Column(name = "phone_number", unique = true)
     String phoneNumber;
-
-    public UserDetails() {
-        super();
-    }
 
     public UserDetails(String userId, String password, String username, String email, String firstName, String lastName, String phoneNumber) {
         super(userId, password);

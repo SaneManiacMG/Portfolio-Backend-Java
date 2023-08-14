@@ -7,10 +7,12 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
+@MappedSuperclass
 public class User {
     @Id
     String userId;
