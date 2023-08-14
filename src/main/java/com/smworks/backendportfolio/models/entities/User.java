@@ -11,24 +11,32 @@ import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class User {
     @Id
     String userId;
 
-    @Column
+    @Column(nullable = false)
     String password;
 
-    @Column
+    @Column(name = "date_created")
     LocalDateTime dateCreated;
 
-    @Column
+    @Column(name = "date_modified")
     LocalDateTime dateModified;
 
-    @Column
+    @Column(name = "account_role")
     AccountRole accountRole;
 
-    @Column
+    @Column(name = "account_status")
     AccountStatus accountStatus;
+
+    public User(String userId, String password) {
+        this.userId = userId;
+        this.password = password;
+        this.dateCreated = LocalDateTime.now();
+        this.dateModified = LocalDateTime.now();
+        this.accountRole = AccountRole.USER;
+        this.accountStatus = AccountStatus.ACTIVE;
+    }
 }
