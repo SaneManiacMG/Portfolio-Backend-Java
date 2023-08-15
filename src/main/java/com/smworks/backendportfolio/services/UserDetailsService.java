@@ -50,12 +50,35 @@ public class UserDetailsService implements IUserDetailsService {
     }
 
     @Override
-    public UserDetails getUserDetails(String userId) {
-        System.out.println("User Id: " + userId);
+    public Object getUserDetails(String userId) {
         try {
             return userRepository.findById(userId).orElse(null);
         } catch (Exception e) {
-            return null;
+            return e;
+        }
+    }
+
+    private Object getUserDetailsByEmail(String email) {
+        try {
+            return userRepository.findByEmail(email);
+        } catch (Exception e) {
+            return e;
+        }
+    }
+
+    private Object getUserDetailsByUsername(String username) {
+        try {
+            return userRepository.findByUsername(username);
+        } catch (Exception e) {
+            return e;
+        }
+    }
+
+    private Object getUserDetailsByPhoneNumber(String phoneNumber) {
+        try {
+            return userRepository.findByPhoneNumber(phoneNumber);
+        } catch (Exception e) {
+            return e;
         }
     }
 
