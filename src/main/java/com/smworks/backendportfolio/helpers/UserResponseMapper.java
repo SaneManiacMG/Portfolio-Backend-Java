@@ -1,6 +1,5 @@
 package com.smworks.backendportfolio.helpers;
 
-import com.smworks.backendportfolio.models.entities.UserDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 

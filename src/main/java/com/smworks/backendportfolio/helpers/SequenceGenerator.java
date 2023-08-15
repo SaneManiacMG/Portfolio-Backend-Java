@@ -20,8 +20,6 @@ public class SequenceGenerator {
     }
 
     private static String getDateTime() {
-        //create custom datetime format
-        String dateTime = DateTimeFormatter.ofPattern("yyMMddhhmmss").format(LocalDateTime.now());
-        return dateTime;
+        return DateTimeFormatter.ofPattern("yyMMddhhmmss").format(LocalDateTime.now());
     }
 }

@@ -7,7 +7,6 @@ import com.smworks.backendportfolio.models.entities.UserDetails;
 import com.smworks.backendportfolio.models.enums.AccountRole;
 import com.smworks.backendportfolio.models.enums.AccountStatus;
 import com.smworks.backendportfolio.models.requests.UserRequest;
-import com.smworks.backendportfolio.models.responses.UserResponse;
 import com.smworks.backendportfolio.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
