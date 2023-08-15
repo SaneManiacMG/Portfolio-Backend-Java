@@ -4,7 +4,6 @@ import com.smworks.backendportfolio.helpers.UserResponseMapper;
 import com.smworks.backendportfolio.interfaces.IUserDetailsService;
 import com.smworks.backendportfolio.models.entities.UserDetails;
 import com.smworks.backendportfolio.models.requests.UserRequest;
-import com.smworks.backendportfolio.models.responses.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,13 +31,13 @@ public class UserDetailsController {
     }
 
     @PutMapping("/updateUser")
-    public UserDetails updateUserDetails(@RequestBody UserRequest userDetails) {
-        return userDetailsService.updateUserDetails(userDetails);
+    public ResponseEntity<Object> updateUserDetails(@RequestBody UserRequest userDetails) {
+        return UserResponseMapper.mapResponse(userDetailsService.updateUserDetails(userDetails));
     }
 
     @DeleteMapping("/deleteUser/{userId}")
-    public String deleteUserDetails(@PathVariable String userId) {
-        return userDetailsService.deleteUserDetails(userId);
+    public Object deleteUserDetails(@PathVariable String userId) {
+        return UserResponseMapper.mapResponse(userDetailsService.deleteUserDetails(userId));
     }
 
     @GetMapping

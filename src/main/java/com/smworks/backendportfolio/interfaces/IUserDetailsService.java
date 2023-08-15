@@ -8,7 +8,7 @@ import java.util.List;
  public interface IUserDetailsService {
      Object createUserAccount(UserRequest userDetails);
      Object getUserDetails(String userId);
-     UserDetails updateUserDetails(UserRequest userDetails);
-     String deleteUserDetails(String userId);
+     Object updateUserDetails(UserRequest userDetails);
+     Object deleteUserDetails(String userId);
      List<UserDetails> getAllUserDetails();
 }

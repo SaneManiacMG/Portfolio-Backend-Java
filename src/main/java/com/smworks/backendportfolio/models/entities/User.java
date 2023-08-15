@@ -5,9 +5,7 @@ import com.smworks.backendportfolio.models.enums.AccountStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
@@ -22,8 +20,10 @@ public class User {
     LocalDateTime dateCreated;
     @Column(name = "date_modified")
     LocalDateTime dateModified;
+    @Enumerated(EnumType.STRING)
     @Column(name = "account_role")
     AccountRole accountRole;
+    @Enumerated(EnumType.STRING)
     @Column(name = "account_status")
     AccountStatus accountStatus;
 

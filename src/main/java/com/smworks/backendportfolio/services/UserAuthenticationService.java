@@ -2,7 +2,7 @@ package com.smworks.backendportfolio.services;
 
 import com.smworks.backendportfolio.interfaces.IUserAuthenticationService;
 import com.smworks.backendportfolio.models.requests.LoginRequest;
-import com.smworks.backendportfolio.models.responses.GenericResponse;
+import com.smworks.backendportfolio.models.responses.LoginResponse;
 import com.smworks.backendportfolio.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,17 +15,17 @@ public class UserAuthenticationService implements IUserAuthenticationService {
     }
 
     @Override
-    public GenericResponse authenticateUser(LoginRequest loginRequest) {
+    public LoginResponse authenticateUser(LoginRequest loginRequest) {
         return null;
     }
 
     @Override
-    public GenericResponse registerUser(LoginRequest loginRequest) {
+    public LoginResponse registerUser(LoginRequest loginRequest) {
         return null;
     }
 
     @Override
-    public GenericResponse resetPassword(LoginRequest loginRequest) {
+    public LoginResponse resetPassword(LoginRequest loginRequest) {
         return null;
     }
 }
