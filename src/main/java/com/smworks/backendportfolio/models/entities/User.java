@@ -16,19 +16,14 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     String userId;
-
     @Column(nullable = false)
     String password;
-
     @Column(name = "date_created")
     LocalDateTime dateCreated;
-
     @Column(name = "date_modified")
     LocalDateTime dateModified;
-
     @Column(name = "account_role")
     AccountRole accountRole;
-
     @Column(name = "account_status")
     AccountStatus accountStatus;
 
@@ -37,7 +32,7 @@ public class User {
         this.password = password;
         this.dateCreated = LocalDateTime.now();
         this.dateModified = LocalDateTime.now();
-        this.accountRole = AccountRole.USER;
-        this.accountStatus = AccountStatus.ACTIVE;
+        this.accountRole = AccountRole.GUEST;
+        this.accountStatus = AccountStatus.UNVERIFIED;
     }
 }

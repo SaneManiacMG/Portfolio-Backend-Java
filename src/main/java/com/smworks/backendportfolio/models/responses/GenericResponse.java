@@ -6,5 +6,5 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class GenericResponse {
-    String message;
+    Object message;
 }

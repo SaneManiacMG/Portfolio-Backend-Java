@@ -15,16 +15,12 @@ import javax.persistence.Table;
 public class UserDetails extends User {
     @Column(unique = true)
     String username;
-
     @Column(unique = true)
     String email;
-
     @Column(name = "first_name")
     String firstName;
-
     @Column(name = "last_name")
     String lastName;
-
     @Column(name = "phone_number", unique = true)
     String phoneNumber;
 
