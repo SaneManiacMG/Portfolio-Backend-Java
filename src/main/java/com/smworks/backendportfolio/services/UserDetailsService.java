@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,6 +33,11 @@ public class UserDetailsService implements IUserDetailsService {
 
     @Override
     public Object createUserAccount(UserRequest userRequest) {
+        List<String> exceptions = getErrors(userRequest);
+        if (!exceptions.isEmpty()) {
+            return exceptions;
+        }
+
         UserDetails userDetails = userMapper.mapUserRequestToUserDetails(userRequest);
 
         userDetails.setUserId(SequenceGenerator.generateUserId());
@@ -45,41 +51,45 @@ public class UserDetailsService implements IUserDetailsService {
             userRepository.save(userDetails);
             return userMapper.mapUserDetailsToUserResponse(userDetails);
         } catch (Exception e) {
-            return null;
+            return e;
         }
     }
 
     @Override
     public Object getUserDetails(String userId) {
-        try {
-            return userRepository.findById(userId).orElse(null);
-        } catch (Exception e) {
-            return e;
+        UserDetails userDetails;
+
+        userDetails = userRepository.findByEmail(userId);
+        if (userDetails != null) {
+            return userDetails;
         }
+
+        userDetails = userRepository.findByUsername(userId);
+        if (userDetails != null) {
+            return userDetails;
+        }
+
+        userDetails = userRepository.findByPhoneNumber(userId);
+        if (userDetails != null) {
+            return userDetails;
+        }
+
+        return null;
     }
 
-    private Object getUserDetailsByEmail(String email) {
-        try {
-            return userRepository.findByEmail(email);
-        } catch (Exception e) {
-            return e;
-        }
-    }
+    private List<String> getErrors(UserRequest request) {
+        List<String> listOfErrors = new ArrayList<>();
 
-    private Object getUserDetailsByUsername(String username) {
-        try {
-            return userRepository.findByUsername(username);
-        } catch (Exception e) {
-            return e;
+        if (getUserDetails(request.getEmail()) != null) {
+            listOfErrors.add("User with email '" + request.getEmail() + "' already exists");
         }
-    }
-
-    private Object getUserDetailsByPhoneNumber(String phoneNumber) {
-        try {
-            return userRepository.findByPhoneNumber(phoneNumber);
-        } catch (Exception e) {
-            return e;
+        if (getUserDetails(request.getUsername()) != null) {
+            listOfErrors.add("User with username '" + request.getUsername() + "' already exists");
         }
+        if (getUserDetails(request.getPhoneNumber()) != null) {
+            listOfErrors.add("User with phone number '" + request.getPhoneNumber() + "' already exists");
+        }
+        return listOfErrors;
     }
 
     @Override
@@ -90,7 +100,16 @@ public class UserDetailsService implements IUserDetailsService {
 
     @Override
     public String deleteUserDetails(String userId) {
-        userRepository.deleteById(userId);
+        UserDetails userDetails;
+
+        if (getUserDetails(userId) == null) {
+            return "User with id: " + userId + " does not exist";
+        } else {
+            userDetails = (UserDetails) getUserDetails(userId);
+        }
+
+        userRepository.deleteById(userDetails.getUserId());
+
         return "User with id: " + userId + " deleted successfully";
     }
 
