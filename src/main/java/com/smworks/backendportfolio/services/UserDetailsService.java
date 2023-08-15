@@ -7,6 +7,7 @@ import com.smworks.backendportfolio.models.entities.UserDetails;
 import com.smworks.backendportfolio.models.enums.AccountRole;
 import com.smworks.backendportfolio.models.enums.AccountStatus;
 import com.smworks.backendportfolio.models.requests.UserRequest;
+import com.smworks.backendportfolio.models.responses.UserResponse;
 import com.smworks.backendportfolio.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -93,28 +94,84 @@ public class UserDetailsService implements IUserDetailsService {
     }
 
     @Override
-    public UserDetails updateUserDetails(UserRequest userRequest) {
-        UserDetails userDetails = userMapper.mapUserRequestToUserDetails(userRequest);
-        return userRepository.save(userDetails);
+    public Object updateUserDetails(UserRequest userRequest) {
+        List<String> listOfErrors = getErrors(userRequest);
+        if (listOfErrors.isEmpty()) {
+            return null;
+        }
+
+        UserDetails updatedUser = userMapper.mapUserRequestToUserDetails(userRequest);
+
+        UserDetails userDetailsByEmail = (UserDetails) getUserDetails(userRequest.getEmail());
+        if (userDetailsByEmail != null) {
+            try {
+                updatedUser = userRepository.save(updateUser(userDetailsByEmail, updatedUser));
+            } catch (Exception e) {
+                return e;
+            }
+            return updatedUser;
+        }
+
+        UserDetails userDetailsByUsername = (UserDetails) getUserDetails(userRequest.getUsername());
+        if (userDetailsByUsername != null) {
+            try {
+                updatedUser = userRepository.save(updateUser(userDetailsByUsername, updatedUser));
+            } catch (Exception e) {
+                return e;
+            }
+            return updatedUser;
+        }
+
+        UserDetails userDetailsByPhoneNumber = (UserDetails) getUserDetails(userRequest.getPhoneNumber());
+        if (userDetailsByPhoneNumber != null) {
+            try {
+                updatedUser = userRepository.save(updateUser(userDetailsByPhoneNumber, updatedUser));
+            } catch (Exception e) {
+                return e;
+            }
+            return updatedUser;
+        }
+        return null;
+    }
+
+    private UserDetails updateUser(UserDetails oldRecord, UserDetails updatedRecord) {
+        oldRecord.setFirstName(updatedRecord.getFirstName());
+        oldRecord.setLastName(updatedRecord.getLastName());
+        oldRecord.setPhoneNumber(updatedRecord.getPhoneNumber());
+        oldRecord.setEmail(updatedRecord.getEmail());
+        oldRecord.setUsername(updatedRecord.getUsername());
+        oldRecord.setDateModified(LocalDateTime.now());
+        return oldRecord;
     }
 
     @Override
-    public String deleteUserDetails(String userId) {
+    public Object deleteUserDetails(String userId) {
         UserDetails userDetails;
 
         if (getUserDetails(userId) == null) {
-            return "User with id: " + userId + " does not exist";
-        } else {
-            userDetails = (UserDetails) getUserDetails(userId);
+            return null;
         }
 
-        userRepository.deleteById(userDetails.getUserId());
+        userDetails = (UserDetails) getUserDetails(userId);
 
-        return "User with id: " + userId + " deleted successfully";
+        try {
+            userRepository.delete(userDetails);
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+
+        return "User with id '" + userId + "' deleted successfully";
     }
 
     @Override
-    public List<UserDetails> getAllUserDetails() {
-        return userRepository.findAll();
+    public List<UserResponse> getAllUserDetails() {
+        List<UserResponse> listOfUserResponses = new ArrayList<>();
+
+        List<UserDetails> listOfUsers = userRepository.findAll();
+        for (UserDetails user : listOfUsers) {
+            listOfUserResponses.add(userMapper.mapUserDetailsToUserResponse(user));
+        }
+
+        return listOfUserResponses;
     }
 }

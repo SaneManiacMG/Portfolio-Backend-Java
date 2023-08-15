@@ -2,13 +2,11 @@ package com.smworks.backendportfolio.controllers;
 
 import com.smworks.backendportfolio.helpers.UserResponseMapper;
 import com.smworks.backendportfolio.interfaces.IUserDetailsService;
-import com.smworks.backendportfolio.models.entities.UserDetails;
 import com.smworks.backendportfolio.models.requests.UserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -41,7 +39,7 @@ public class UserDetailsController {
     }
 
     @GetMapping
-    public List<UserDetails> getAllUserDetails() {
-        return userDetailsService.getAllUserDetails();
+    public ResponseEntity<Object> getAllUserDetails() {
+        return new ResponseEntity<>(userDetailsService.getAllUserDetails(), HttpStatus.OK);
     }
 }

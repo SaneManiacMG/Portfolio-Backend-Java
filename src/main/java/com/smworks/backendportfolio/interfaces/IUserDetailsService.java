@@ -2,6 +2,7 @@ package com.smworks.backendportfolio.interfaces;
 
 import com.smworks.backendportfolio.models.entities.UserDetails;
 import com.smworks.backendportfolio.models.requests.UserRequest;
+import com.smworks.backendportfolio.models.responses.UserResponse;
 
 import java.util.List;
 
@@ -10,5 +11,5 @@ import java.util.List;
      Object getUserDetails(String userId);
      Object updateUserDetails(UserRequest userDetails);
      Object deleteUserDetails(String userId);
-     List<UserDetails> getAllUserDetails();
+     List<UserResponse> getAllUserDetails();
 }
