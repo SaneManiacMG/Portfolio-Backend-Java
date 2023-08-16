@@ -100,7 +100,7 @@ public class UserDetailsService implements IUserDetailsService {
         UserDetails userDetailsByEmail = (UserDetails) getUserDetails(userRequest.getEmail());
         if (userDetailsByEmail != null) {
             try {
-                updatedUser = userRepository.save(updateUser(userDetailsByEmail, updatedUser));
+                updatedUser = userRepository.save(updateUserObject(userDetailsByEmail, updatedUser));
             } catch (Exception e) {
                 return e;
             }
@@ -110,7 +110,7 @@ public class UserDetailsService implements IUserDetailsService {
         UserDetails userDetailsByUsername = (UserDetails) getUserDetails(userRequest.getUsername());
         if (userDetailsByUsername != null) {
             try {
-                updatedUser = userRepository.save(updateUser(userDetailsByUsername, updatedUser));
+                updatedUser = userRepository.save(updateUserObject(userDetailsByUsername, updatedUser));
             } catch (Exception e) {
                 return e;
             }
@@ -120,7 +120,7 @@ public class UserDetailsService implements IUserDetailsService {
         UserDetails userDetailsByPhoneNumber = (UserDetails) getUserDetails(userRequest.getPhoneNumber());
         if (userDetailsByPhoneNumber != null) {
             try {
-                updatedUser = userRepository.save(updateUser(userDetailsByPhoneNumber, updatedUser));
+                updatedUser = userRepository.save(updateUserObject(userDetailsByPhoneNumber, updatedUser));
             } catch (Exception e) {
                 return e;
             }
@@ -129,7 +129,7 @@ public class UserDetailsService implements IUserDetailsService {
         return null;
     }
 
-    private UserDetails updateUser(UserDetails oldRecord, UserDetails updatedRecord) {
+    private UserDetails updateUserObject(UserDetails oldRecord, UserDetails updatedRecord) {
         oldRecord.setFirstName(updatedRecord.getFirstName());
         oldRecord.setLastName(updatedRecord.getLastName());
         oldRecord.setPhoneNumber(updatedRecord.getPhoneNumber());
