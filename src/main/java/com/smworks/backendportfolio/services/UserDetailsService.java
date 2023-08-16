@@ -20,16 +20,11 @@ import java.util.List;
 public class UserDetailsService implements IUserDetailsService {
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private UserAuthenticationService userAuthenticationService;
     private final UserMapper userMapper;
 
-    public UserDetailsService(UserRepository userRepository, UserMapper userMapper,
-                              UserAuthenticationService userAuthenticationService) {
+    public UserDetailsService(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
-        this.userAuthenticationService = userAuthenticationService;
     }
 
     @Override
@@ -141,19 +136,18 @@ public class UserDetailsService implements IUserDetailsService {
         oldRecord.setEmail(updatedRecord.getEmail());
         oldRecord.setUsername(updatedRecord.getUsername());
         oldRecord.setDateModified(LocalDateTime.now());
+        oldRecord.setAccountRole(updatedRecord.getAccountRole());
+        oldRecord.setAccountStatus(updatedRecord.getAccountStatus());
         return oldRecord;
     }
 
     @Override
     public Object deleteUserDetails(String userId) {
-        UserDetails userDetails;
-
         if (getUserDetails(userId) == null) {
             return null;
         }
 
-        userDetails = (UserDetails) getUserDetails(userId);
-
+        UserDetails userDetails = (UserDetails) getUserDetails(userId);
         try {
             userRepository.delete(userDetails);
         } catch (Exception e) {
@@ -173,5 +167,43 @@ public class UserDetailsService implements IUserDetailsService {
         }
 
         return listOfUserResponses;
+    }
+
+    @Override
+    public Object updateUserRole(String userId, AccountRole role) {
+        UserDetails userDetails = (UserDetails) getUserDetails(userId);
+
+        if (userDetails == null) {
+            return null;
+        }
+
+        userDetails.setAccountRole(role);
+        userDetails.setDateModified(LocalDateTime.now());
+
+        try {
+            userRepository.save(userDetails);
+        } catch (Exception e) {
+            return e;
+        }
+        return userDetails;
+    }
+
+    @Override
+    public Object updateUserStatus(String userId, AccountStatus status) {
+        UserDetails userDetails = (UserDetails) getUserDetails(userId);
+
+        if (userDetails == null) {
+            return null;
+        }
+
+        userDetails.setAccountStatus(status);
+        userDetails.setDateModified(LocalDateTime.now());
+
+        try {
+            userRepository.save(userDetails);
+        } catch (Exception e) {
+            return e;
+        }
+        return userDetails;
     }
 }

@@ -1,31 +1,48 @@
 package com.smworks.backendportfolio.services;
 
 import com.smworks.backendportfolio.interfaces.IUserAuthenticationService;
-import com.smworks.backendportfolio.models.requests.LoginRequest;
-import com.smworks.backendportfolio.models.responses.LoginResponse;
-import com.smworks.backendportfolio.repositories.UserRepository;
+import com.smworks.backendportfolio.interfaces.IUserDetailsService;
+import com.smworks.backendportfolio.models.entities.UserDetails;
+import com.smworks.backendportfolio.models.enums.AccountRole;
+import com.smworks.backendportfolio.models.enums.AccountStatus;
+import com.smworks.backendportfolio.models.requests.AuthRequest;
+import com.smworks.backendportfolio.models.responses.AuthResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserAuthenticationService implements IUserAuthenticationService {
-    private UserRepository userRepository;
+    @Autowired
+    private IUserDetailsService userDetailsService;
 
-    public UserAuthenticationService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserAuthenticationService(IUserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
-    public LoginResponse authenticateUser(LoginRequest loginRequest) {
+    public Object authenticateUser(AuthRequest authRequest) {
         return null;
     }
 
     @Override
-    public LoginResponse registerUser(LoginRequest loginRequest) {
+    public Object registerUser(AuthRequest authRequest) {
+
         return null;
     }
 
     @Override
-    public LoginResponse resetPassword(LoginRequest loginRequest) {
+    public Object resetPassword(AuthRequest authRequest) {
         return null;
     }
+
+    @Override
+    public Object changeAccountStatus(String userId, AccountStatus status) {
+        return userDetailsService.updateUserStatus(userId, status);
+    }
+
+    @Override
+    public Object changeAccountRole(String userId, AccountRole role) {
+        return userDetailsService.updateUserRole(userId, role);
+    }
+
 }
