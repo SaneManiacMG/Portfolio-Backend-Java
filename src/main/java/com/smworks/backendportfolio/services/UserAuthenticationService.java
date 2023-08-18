@@ -1,22 +1,20 @@
 package com.smworks.backendportfolio.services;
 
+import com.smworks.backendportfolio.helpers.PasswordValidator;
 import com.smworks.backendportfolio.interfaces.IUserAuthenticationService;
 import com.smworks.backendportfolio.interfaces.IUserDetailsService;
-import com.smworks.backendportfolio.models.entities.UserDetails;
 import com.smworks.backendportfolio.models.enums.AccountRole;
 import com.smworks.backendportfolio.models.enums.AccountStatus;
 import com.smworks.backendportfolio.models.requests.AuthRequest;
-import com.smworks.backendportfolio.models.responses.AuthResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserAuthenticationService implements IUserAuthenticationService {
     @Autowired
     private IUserDetailsService userDetailsService;
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public UserAuthenticationService(IUserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
@@ -24,18 +22,17 @@ public class UserAuthenticationService implements IUserAuthenticationService {
 
     @Override
     public Object authenticateUser(AuthRequest authRequest) {
-        return null;
+        return authRequest;
     }
 
     @Override
-    public Object registerUser(AuthRequest authRequest) {
+    public Object setPassword(AuthRequest authRequest) {
+        List<String> errors = PasswordValidator.validatePassword(authRequest.getPassword());
+        if (!errors.isEmpty()) {
+            return errors;
+        }
 
-        return null;
-    }
-
-    @Override
-    public Object resetPassword(AuthRequest authRequest) {
-        return null;
+        return userDetailsService.changePassword(authRequest.getUserId(), authRequest.getPassword());
     }
 
     @Override

@@ -17,4 +17,6 @@ import java.util.List;
 
      Object updateUserRole(String userId, AccountRole role);
      Object updateUserStatus(String userId, AccountStatus status);
+
+     Object changePassword(String userId, String password);
 }

@@ -10,7 +10,7 @@ import lombok.NonNull;
 @Data
 public class AuthRequest {
     @NonNull
-    String username;
+    String userId;
 
     @NonNull
     String password;

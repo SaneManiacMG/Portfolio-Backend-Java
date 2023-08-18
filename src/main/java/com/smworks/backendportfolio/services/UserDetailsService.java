@@ -1,6 +1,6 @@
 package com.smworks.backendportfolio.services;
 
-import com.smworks.backendportfolio.helpers.mappers.UserMapper;
+import com.smworks.backendportfolio.helpers.mappers.models.UserMapper;
 import com.smworks.backendportfolio.helpers.SequenceGenerator;
 import com.smworks.backendportfolio.interfaces.IUserDetailsService;
 import com.smworks.backendportfolio.models.entities.UserDetails;
@@ -10,6 +10,7 @@ import com.smworks.backendportfolio.models.requests.UserRequest;
 import com.smworks.backendportfolio.models.responses.UserResponse;
 import com.smworks.backendportfolio.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,6 +22,8 @@ public class UserDetailsService implements IUserDetailsService {
     @Autowired
     private UserRepository userRepository;
     private final UserMapper userMapper;
+/*    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;*/
 
     public UserDetailsService(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
@@ -185,7 +188,7 @@ public class UserDetailsService implements IUserDetailsService {
         } catch (Exception e) {
             return e;
         }
-        return userDetails;
+        return userMapper.mapUserDetailsToUserResponse(userDetails);
     }
 
     @Override
@@ -204,6 +207,25 @@ public class UserDetailsService implements IUserDetailsService {
         } catch (Exception e) {
             return e;
         }
-        return userDetails;
+        return userMapper.mapUserDetailsToUserResponse(userDetails);
+    }
+
+    @Override
+    public Object changePassword(String userId, String password) {
+        UserDetails userDetails = (UserDetails) getUserDetails(userId);
+        if (userDetails == null) {
+            return null;
+        }
+
+        //userDetails.setPassword(bCryptPasswordEncoder.encode(password));
+        userDetails.setPassword(password);
+        userDetails.setDateModified(LocalDateTime.now());
+
+        try {
+            userRepository.save(userDetails);
+        } catch (Exception e) {
+            return e;
+        }
+        return "Password updated successfully";
     }
 }

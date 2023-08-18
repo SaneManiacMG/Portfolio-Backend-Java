@@ -1,11 +1,11 @@
-package com.smworks.backendportfolio.helpers;
+package com.smworks.backendportfolio.helpers.mappers.http;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-public class UserResponseMapper {
+public class UserHttpResponseMapper {
     public static ResponseEntity<Object> mapResponse(Object response) {
         if (response instanceof Exception) {
             return new ResponseEntity<>(((Exception) response).getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -16,7 +16,7 @@ public class UserResponseMapper {
         }
 
         if (response == null) {
-            return new ResponseEntity<>("User Details not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("User details not found", HttpStatus.NOT_FOUND);
         }
 
         return new ResponseEntity<>(response, HttpStatus.OK);
