@@ -60,17 +60,17 @@ public class UserDetailsService implements IUserDetailsService {
 
         userDetails = userRepository.findByEmail(userId);
         if (userDetails != null) {
-            return userDetails;
+            return userMapper.mapUserDetailsToUserResponse(userDetails);
         }
 
         userDetails = userRepository.findByUsername(userId);
         if (userDetails != null) {
-            return userDetails;
+            return userMapper.mapUserDetailsToUserResponse(userDetails);
         }
 
         userDetails = userRepository.findByPhoneNumber(userId);
         if (userDetails != null) {
-            return userDetails;
+            return userMapper.mapUserDetailsToUserResponse(userDetails);
         }
 
         return null;
