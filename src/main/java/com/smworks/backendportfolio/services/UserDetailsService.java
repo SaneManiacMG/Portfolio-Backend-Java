@@ -9,8 +9,11 @@ import com.smworks.backendportfolio.models.enums.AccountStatus;
 import com.smworks.backendportfolio.models.requests.UserRequest;
 import com.smworks.backendportfolio.models.responses.UserResponse;
 import com.smworks.backendportfolio.repositories.UserRepository;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -22,8 +25,10 @@ public class UserDetailsService implements IUserDetailsService {
     @Autowired
     private UserRepository userRepository;
     private final UserMapper userMapper;
-/*    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;*/
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    // TODO: Check and enforce order of identifiers, i.e. email, username, phone number
 
     public UserDetailsService(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
@@ -32,7 +37,7 @@ public class UserDetailsService implements IUserDetailsService {
 
     @Override
     public Object createUserAccount(UserRequest userRequest) {
-        List<String> exceptions = getErrors(userRequest);
+        List<String> exceptions = getErrors(userRequest, null);
         if (!exceptions.isEmpty()) {
             return exceptions;
         }
@@ -55,7 +60,7 @@ public class UserDetailsService implements IUserDetailsService {
     }
 
     @Override
-    public Object getUserDetails(String userId) {
+    public Object getUserDetailsResponse(String userId) {
         UserDetails userDetails;
 
         userDetails = userRepository.findByEmail(userId);
@@ -76,16 +81,21 @@ public class UserDetailsService implements IUserDetailsService {
         return null;
     }
 
-    private List<String> getErrors(UserRequest request) {
+    private List<String> getErrors(UserRequest request, String userId) {
         List<String> listOfErrors = new ArrayList<>();
 
-        if (getUserDetails(request.getEmail()) != null) {
+        UserDetails userDetailsByEmail = getUserDetails(request.getEmail());
+        if (getUserDetails(request.getEmail()) != null && !userDetailsByEmail.getUserId().equals(userId)) {
             listOfErrors.add("User with email '" + request.getEmail() + "' already exists");
         }
-        if (getUserDetails(request.getUsername()) != null) {
+
+        UserDetails userDetailsByUsername = getUserDetails(request.getUsername());
+        if (getUserDetails(request.getUsername()) != null && !userDetailsByUsername.getUserId().equals(userId)) {
             listOfErrors.add("User with username '" + request.getUsername() + "' already exists");
         }
-        if (getUserDetails(request.getPhoneNumber()) != null) {
+
+        UserDetails userDetailsByPhoneNumber = getUserDetails(request.getPhoneNumber());
+        if (getUserDetails(request.getPhoneNumber()) != null && !userDetailsByPhoneNumber.getUserId().equals(userId)) {
             listOfErrors.add("User with phone number '" + request.getPhoneNumber() + "' already exists");
         }
         return listOfErrors;
@@ -93,37 +103,43 @@ public class UserDetailsService implements IUserDetailsService {
 
     @Override
     public Object updateUserDetails(UserRequest userRequest) {
-        List<String> listOfErrors = getErrors(userRequest);
-        if (listOfErrors.isEmpty()) {
-            return null;
-        }
+        UserDetails updatedUser;
 
-        UserDetails updatedUser = userMapper.mapUserRequestToUserDetails(userRequest);
-
-        UserDetails userDetailsByEmail = (UserDetails) getUserDetails(userRequest.getEmail());
+        UserDetails userDetailsByEmail = getUserDetails(userRequest.getEmail());
         if (userDetailsByEmail != null) {
             try {
-                updatedUser = userRepository.save(updateUserObject(userDetailsByEmail, updatedUser));
+                updatedUser = userRepository.save(updateUserObject(userMapper.mapUserRequestToUserDetails(userRequest),
+                        userDetailsByEmail));
+            } catch (DataIntegrityViolationException dive) {
+                return getErrors(userRequest, userDetailsByEmail.getUserId());
             } catch (Exception e) {
+                System.out.println(e.getClass());
                 return e;
             }
             return updatedUser;
         }
 
-        UserDetails userDetailsByUsername = (UserDetails) getUserDetails(userRequest.getUsername());
+        UserDetails userDetailsByUsername = getUserDetails(userRequest.getUsername());
         if (userDetailsByUsername != null) {
+
             try {
-                updatedUser = userRepository.save(updateUserObject(userDetailsByUsername, updatedUser));
+                updatedUser = userRepository.save(updateUserObject(
+                        userMapper.mapUserRequestToUserDetails(userRequest), userDetailsByUsername));
+            } catch (DataIntegrityViolationException dive) {
+                return getErrors(userRequest, userDetailsByUsername.getUserId());
             } catch (Exception e) {
                 return e;
             }
             return updatedUser;
         }
 
-        UserDetails userDetailsByPhoneNumber = (UserDetails) getUserDetails(userRequest.getPhoneNumber());
+        UserDetails userDetailsByPhoneNumber = getUserDetails(userRequest.getPhoneNumber());
         if (userDetailsByPhoneNumber != null) {
             try {
-                updatedUser = userRepository.save(updateUserObject(userDetailsByPhoneNumber, updatedUser));
+                updatedUser = userRepository.save(updateUserObject(
+                        userMapper.mapUserRequestToUserDetails(userRequest), userDetailsByPhoneNumber));
+            } catch (DataIntegrityViolationException dive) {
+                return getErrors(userRequest, userDetailsByPhoneNumber.getUserId());
             } catch (Exception e) {
                 return e;
             }
@@ -132,25 +148,32 @@ public class UserDetailsService implements IUserDetailsService {
         return null;
     }
 
-    private UserDetails updateUserObject(UserDetails oldRecord, UserDetails updatedRecord) {
+    private UserDetails updateUserObject(UserDetails updatedRecord, UserDetails oldRecord) {
         oldRecord.setFirstName(updatedRecord.getFirstName());
         oldRecord.setLastName(updatedRecord.getLastName());
         oldRecord.setPhoneNumber(updatedRecord.getPhoneNumber());
         oldRecord.setEmail(updatedRecord.getEmail());
         oldRecord.setUsername(updatedRecord.getUsername());
         oldRecord.setDateModified(LocalDateTime.now());
-        oldRecord.setAccountRole(updatedRecord.getAccountRole());
-        oldRecord.setAccountStatus(updatedRecord.getAccountStatus());
         return oldRecord;
     }
 
     @Override
     public Object deleteUserDetails(String userId) {
-        if (getUserDetails(userId) == null) {
+        UserDetails userDetails;
+
+        if (userRepository.findByEmail(userId) != null) {
+            userDetails = userRepository.findByEmail(userId);
+        }
+        else if (userRepository.findByUsername(userId) != null) {
+            userDetails = userRepository.findByUsername(userId);
+        }
+        else if (userRepository.findByPhoneNumber(userId) != null){
+            userDetails = userRepository.findByPhoneNumber(userId);
+        } else {
             return null;
         }
 
-        UserDetails userDetails = (UserDetails) getUserDetails(userId);
         try {
             userRepository.delete(userDetails);
         } catch (Exception e) {
@@ -174,7 +197,7 @@ public class UserDetailsService implements IUserDetailsService {
 
     @Override
     public Object updateUserRole(String userId, AccountRole role) {
-        UserDetails userDetails = (UserDetails) getUserDetails(userId);
+        UserDetails userDetails = getUserDetails(userId);
 
         if (userDetails == null) {
             return null;
@@ -193,7 +216,7 @@ public class UserDetailsService implements IUserDetailsService {
 
     @Override
     public Object updateUserStatus(String userId, AccountStatus status) {
-        UserDetails userDetails = (UserDetails) getUserDetails(userId);
+        UserDetails userDetails = getUserDetails(userId);
 
         if (userDetails == null) {
             return null;
@@ -212,12 +235,12 @@ public class UserDetailsService implements IUserDetailsService {
 
     @Override
     public Object changePassword(String userId, String password) {
-        UserDetails userDetails = (UserDetails) getUserDetails(userId);
+        UserDetails userDetails = getUserDetails(userId);
         if (userDetails == null) {
             return null;
         }
 
-        //userDetails.setPassword(bCryptPasswordEncoder.encode(password));
+        userDetails.setPassword(bCryptPasswordEncoder.encode(password));
         userDetails.setPassword(password);
         userDetails.setDateModified(LocalDateTime.now());
 
@@ -227,5 +250,26 @@ public class UserDetailsService implements IUserDetailsService {
             return e;
         }
         return "Password updated successfully";
+    }
+
+    private UserDetails getUserDetails(String userId) {
+        UserDetails userDetails;
+
+        userDetails = userRepository.findByEmail(userId);
+        if (userDetails != null) {
+            return userDetails;
+        }
+
+        userDetails = userRepository.findByUsername(userId);
+        if (userDetails != null) {
+            return userDetails;
+        }
+
+        userDetails = userRepository.findByPhoneNumber(userId);
+        if (userDetails != null) {
+            return userDetails;
+        }
+
+        return null;
     }
 }

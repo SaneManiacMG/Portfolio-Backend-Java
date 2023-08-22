@@ -25,7 +25,7 @@ public class UserDetailsController {
 
     @GetMapping("/getUser/{userId}")
     public ResponseEntity<Object> getUserDetails(@PathVariable String userId) {
-        return UserHttpResponseMapper.mapResponse(userDetailsService.getUserDetails(userId));
+        return UserHttpResponseMapper.mapResponse(userDetailsService.getUserDetailsResponse(userId));
     }
 
     @PutMapping("/updateUser")

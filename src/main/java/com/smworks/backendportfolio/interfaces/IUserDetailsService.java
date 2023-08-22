@@ -10,7 +10,7 @@ import java.util.List;
 
  public interface IUserDetailsService {
      Object createUserAccount(UserRequest userDetails);
-     Object getUserDetails(String userId);
+     Object getUserDetailsResponse(String userId);
      Object updateUserDetails(UserRequest userDetails);
      Object deleteUserDetails(String userId);
      List<UserResponse> getAllUserDetails();
