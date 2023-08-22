@@ -9,9 +9,7 @@ import com.smworks.backendportfolio.models.enums.AccountStatus;
 import com.smworks.backendportfolio.models.requests.UserRequest;
 import com.smworks.backendportfolio.models.responses.UserResponse;
 import com.smworks.backendportfolio.repositories.UserRepository;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -103,7 +101,7 @@ public class UserDetailsService implements IUserDetailsService {
 
     @Override
     public Object updateUserDetails(UserRequest userRequest) {
-        UserDetails updatedUser;
+        UserDetails updatedUser = null;
 
         UserDetails userDetailsByEmail = getUserDetails(userRequest.getEmail());
         if (userDetailsByEmail != null) {
@@ -116,12 +114,10 @@ public class UserDetailsService implements IUserDetailsService {
                 System.out.println(e.getClass());
                 return e;
             }
-            return updatedUser;
         }
 
         UserDetails userDetailsByUsername = getUserDetails(userRequest.getUsername());
         if (userDetailsByUsername != null) {
-
             try {
                 updatedUser = userRepository.save(updateUserObject(
                         userMapper.mapUserRequestToUserDetails(userRequest), userDetailsByUsername));
@@ -130,7 +126,6 @@ public class UserDetailsService implements IUserDetailsService {
             } catch (Exception e) {
                 return e;
             }
-            return updatedUser;
         }
 
         UserDetails userDetailsByPhoneNumber = getUserDetails(userRequest.getPhoneNumber());
@@ -143,9 +138,13 @@ public class UserDetailsService implements IUserDetailsService {
             } catch (Exception e) {
                 return e;
             }
-            return updatedUser;
         }
-        return null;
+
+        if (updatedUser == null) {
+            return null;
+        }
+
+        return userMapper.mapUserDetailsToUserResponse(updatedUser);
     }
 
     private UserDetails updateUserObject(UserDetails updatedRecord, UserDetails oldRecord) {
