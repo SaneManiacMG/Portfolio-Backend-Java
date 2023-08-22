@@ -241,7 +241,6 @@ public class UserDetailsService implements IUserDetailsService {
         }
 
         userDetails.setPassword(bCryptPasswordEncoder.encode(password));
-        userDetails.setPassword(password);
         userDetails.setDateModified(LocalDateTime.now());
 
         try {
