@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-public class UserDetails extends User {
+public class UserEntity extends UserBase {
     @Column(unique = true)
     String username;
     @Column(unique = true)
@@ -23,7 +23,7 @@ public class UserDetails extends User {
     @Column(name = "phone_number", unique = true)
     String phoneNumber;
 
-    public UserDetails(String userId, String password, String username, String email, String firstName, String lastName, String phoneNumber) {
+    public UserEntity(String userId, String password, String username, String email, String firstName, String lastName, String phoneNumber) {
         super(userId, password);
         this.username = username;
         this.email = email;

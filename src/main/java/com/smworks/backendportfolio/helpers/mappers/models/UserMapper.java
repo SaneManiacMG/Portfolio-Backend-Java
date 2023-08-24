@@ -1,6 +1,6 @@
 package com.smworks.backendportfolio.helpers.mappers.models;
 
-import com.smworks.backendportfolio.models.entities.UserDetails;
+import com.smworks.backendportfolio.models.entities.UserEntity;
 import com.smworks.backendportfolio.models.requests.UserRequest;
 import com.smworks.backendportfolio.models.responses.UserResponse;
 import org.modelmapper.ModelMapper;
@@ -14,11 +14,11 @@ public class UserMapper {
         this.modelMapper = modelMapper;
     }
 
-    public UserDetails mapUserRequestToUserDetails(UserRequest userRequest) {
-        return modelMapper.map(userRequest, UserDetails.class);
+    public UserEntity mapUserRequestToUserEntity(UserRequest userRequest) {
+        return modelMapper.map(userRequest, UserEntity.class);
     }
 
-    public UserResponse mapUserDetailsToUserResponse(UserDetails userDetails) {
-        return modelMapper.map(userDetails, UserResponse.class);
+    public UserResponse mapUserEntityToUserResponse(UserEntity userEntity) {
+        return modelMapper.map(userEntity, UserResponse.class);
     }
 }

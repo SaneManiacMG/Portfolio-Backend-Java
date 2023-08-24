@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @MappedSuperclass
-public class User {
+public class UserBase {
     @Id
     String userId;
     @Column(nullable = false)
@@ -27,7 +27,7 @@ public class User {
     @Column(name = "account_status")
     AccountStatus accountStatus;
 
-    public User(String userId, String password) {
+    public UserBase(String userId, String password) {
         this.userId = userId;
         this.password = password;
         this.dateCreated = LocalDateTime.now();
