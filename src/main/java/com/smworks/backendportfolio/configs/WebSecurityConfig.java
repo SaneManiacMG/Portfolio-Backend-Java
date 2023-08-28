@@ -19,7 +19,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
     private UserAuthenticationService userAuthenticationService;
 
     @Autowired
@@ -46,21 +45,16 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
     public UserDetailsService users() {
         UserDetails admin = User.builder()
                 .username("admin")
-                .password(bCryptPasswordEncoder.encode("password"))
+                .password("password")
                 .roles("ADMIN")
                 .build();
 
         UserDetails user = User.builder()
                 .username("user")
-                .password(bCryptPasswordEncoder.encode("password"))
+                .password("password")
                 .roles("USER")
                 .build();
 

@@ -21,16 +21,16 @@ import java.util.List;
 @Service
 public class UserEntityService implements IUserEntityService {
     @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     private final UserMapper userMapper;
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     // TODO: Check and enforce order of identifiers, i.e. email, username, phone number
 
-    public UserEntityService(UserRepository userRepository, UserMapper userMapper) {
+    public UserEntityService(UserRepository userRepository, UserMapper userMapper, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override

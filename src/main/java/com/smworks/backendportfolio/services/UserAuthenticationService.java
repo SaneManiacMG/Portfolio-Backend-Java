@@ -23,11 +23,6 @@ public class UserAuthenticationService implements IUserAuthenticationService {
     @Autowired
     private UserRepository userRepository;
 
-    public UserAuthenticationService(IUserEntityService userEntityService, UserRepository userRepository) {
-        this.userEntityService = userEntityService;
-        this.userRepository = userRepository;
-    }
-
     @Override
     public UserDetails authenticateUser(AuthRequest authRequest) {
         UserEntity user = getUserEntity(authRequest.getUserId());
@@ -66,7 +61,7 @@ public class UserAuthenticationService implements IUserAuthenticationService {
         }
 
         UserEntity userByPhoneNumber = userRepository.findByPhoneNumber(userId);
-        if (userByUsername != null) {
+        if (userByPhoneNumber != null) {
             return userByPhoneNumber;
         }
 
