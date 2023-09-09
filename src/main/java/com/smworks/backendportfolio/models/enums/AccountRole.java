@@ -6,9 +6,9 @@ import java.util.Collection;
 import java.util.Iterator;
 
 public enum AccountRole implements Collection<GrantedAuthority> {
-    ADMIN,
+    GUEST,
     USER,
-    GUEST;
+    ADMIN;
 
     @Override
     public int size() {

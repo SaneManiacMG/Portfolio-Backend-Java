@@ -194,63 +194,7 @@ public class UserEntityService implements IUserEntityService {
         return listOfUserResponses;
     }
 
-    @Override
-    public Object updateUserRole(String userId, AccountRole role) {
-        UserEntity userEntity = getUserDetails(userId);
-
-        if (userEntity == null) {
-            return null;
-        }
-
-        userEntity.setAccountRole(role);
-        userEntity.setDateModified(LocalDateTime.now());
-
-        try {
-            userRepository.save(userEntity);
-        } catch (Exception e) {
-            return e;
-        }
-        return userMapper.mapUserEntityToUserResponse(userEntity);
-    }
-
-    @Override
-    public Object updateUserStatus(String userId, AccountStatus status) {
-        UserEntity userEntity = getUserDetails(userId);
-
-        if (userEntity == null) {
-            return null;
-        }
-
-        userEntity.setAccountStatus(status);
-        userEntity.setDateModified(LocalDateTime.now());
-
-        try {
-            userRepository.save(userEntity);
-        } catch (Exception e) {
-            return e;
-        }
-        return userMapper.mapUserEntityToUserResponse(userEntity);
-    }
-
-    @Override
-    public Object changePassword(String userId, String password) {
-        UserEntity userEntity = getUserDetails(userId);
-        if (userEntity == null) {
-            return null;
-        }
-
-        userEntity.setPassword(bCryptPasswordEncoder.encode(password));
-        userEntity.setDateModified(LocalDateTime.now());
-
-        try {
-            userRepository.save(userEntity);
-        } catch (Exception e) {
-            return e;
-        }
-        return "Password updated successfully";
-    }
-
-    private UserEntity getUserDetails(String userId) {
+    protected UserEntity getUserDetails(String userId) {
         UserEntity userEntity;
 
         userEntity = userRepository.findByEmail(userId);

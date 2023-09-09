@@ -13,9 +13,4 @@ import java.util.List;
      Object updateUserEntity(UserRequest userRequest);
      Object deleteUserEntity(String userId);
      List<UserResponse> getAllUserEntities();
-
-     Object updateUserRole(String userId, AccountRole role);
-     Object updateUserStatus(String userId, AccountStatus status);
-
-     Object changePassword(String userId, String password);
-}
+ }

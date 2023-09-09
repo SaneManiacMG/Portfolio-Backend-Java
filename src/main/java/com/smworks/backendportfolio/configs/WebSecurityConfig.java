@@ -20,6 +20,8 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfig {
 
     private UserAuthenticationService userAuthenticationService;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     public WebSecurityConfig(UserAuthenticationService userAuthenticationService) {
@@ -35,30 +37,6 @@ public class WebSecurityConfig {
                 .httpBasic();
 
         return http.build();
-        /*http
-                .csrf().disable()
-                .authorizeRequests().antMatchers("/").permitAll()
-                .and()
-                .httpBasic();
-
-        return http.build();*/
-    }
-
-    @Bean
-    public UserDetailsService users() {
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password("password")
-                .roles("ADMIN")
-                .build();
-
-        UserDetails user = User.builder()
-                .username("user")
-                .password("password")
-                .roles("USER")
-                .build();
-
-        return new InMemoryUserDetailsManager(admin, user);
     }
 
     @Bean
