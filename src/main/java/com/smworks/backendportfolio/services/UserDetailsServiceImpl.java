@@ -2,13 +2,15 @@ package com.smworks.backendportfolio.services;
 
 import com.smworks.backendportfolio.models.entities.UserDetailsImpl;
 import com.smworks.backendportfolio.models.entities.UserEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private final UserEntityService userEntityService;
+    private UserEntityService userEntityService;
 
+    @Autowired
     public UserDetailsServiceImpl(UserEntityService userEntityService) {
         this.userEntityService = userEntityService;
     }

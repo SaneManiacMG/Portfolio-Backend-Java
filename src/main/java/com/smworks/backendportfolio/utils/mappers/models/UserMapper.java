@@ -1,4 +1,4 @@
-package com.smworks.backendportfolio.helpers.mappers.models;
+package com.smworks.backendportfolio.utils.mappers.models;
 
 import com.smworks.backendportfolio.models.entities.UserEntity;
 import com.smworks.backendportfolio.models.requests.UserRequest;

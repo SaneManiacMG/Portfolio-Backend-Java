@@ -1,7 +1,7 @@
 package com.smworks.backendportfolio.services;
 
-import com.smworks.backendportfolio.helpers.mappers.models.UserMapper;
-import com.smworks.backendportfolio.helpers.SequenceGenerator;
+import com.smworks.backendportfolio.utils.mappers.models.UserMapper;
+import com.smworks.backendportfolio.utils.SequenceGenerator;
 import com.smworks.backendportfolio.interfaces.IUserEntityService;
 import com.smworks.backendportfolio.models.entities.UserEntity;
 import com.smworks.backendportfolio.models.enums.AccountRole;
@@ -20,13 +20,13 @@ import java.util.List;
 
 @Service
 public class UserEntityService implements IUserEntityService {
-    @Autowired
-    private final UserRepository userRepository;
-    private final UserMapper userMapper;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private UserRepository userRepository;
+    private UserMapper userMapper;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     // TODO: Check and enforce order of identifiers, i.e. email, username, phone number
 
+    @Autowired
     public UserEntityService(UserRepository userRepository, UserMapper userMapper, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;

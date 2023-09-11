@@ -1,6 +1,6 @@
 package com.smworks.backendportfolio.services;
 
-import com.smworks.backendportfolio.helpers.PasswordValidator;
+import com.smworks.backendportfolio.utils.PasswordValidator;
 import com.smworks.backendportfolio.interfaces.IUserAuthenticationService;
 import com.smworks.backendportfolio.interfaces.IUserEntityService;
 import com.smworks.backendportfolio.models.entities.UserEntity;
@@ -9,7 +9,10 @@ import com.smworks.backendportfolio.models.enums.AccountStatus;
 import com.smworks.backendportfolio.models.requests.AuthRequest;
 import com.smworks.backendportfolio.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -17,16 +20,31 @@ import java.util.List;
 
 @Service
 public class UserAuthenticationService implements IUserAuthenticationService {
-    @Autowired
     private IUserEntityService userEntityService;
+    private UserRepository userRepository;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    private UserRepository userRepository;
+    public UserAuthenticationService(IUserEntityService userEntityService, UserRepository userRepository,
+                                     AuthenticationManager authenticationManager) {
+        this.userEntityService = userEntityService;
+        this.userRepository = userRepository;
+        this.authenticationManager = authenticationManager;
+    }
 
     @Override
     public UserDetails authenticateUser(AuthRequest authRequest) {
-        UserEntity user = getUserEntity(authRequest.getUserId());
-        return new User(user.getUserId(), user.getPassword(), user.getAccountRole());
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        authRequest.getUserId(),
+                        authRequest.getPassword()
+                )
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        if (authentication.getPrincipal() instanceof UserDetails) {
+            return (UserDetails) authentication.getPrincipal();
+        }
+        return null;
     }
 
     @Override

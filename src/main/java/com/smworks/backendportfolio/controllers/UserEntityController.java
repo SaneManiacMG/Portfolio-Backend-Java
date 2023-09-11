@@ -1,6 +1,6 @@
 package com.smworks.backendportfolio.controllers;
 
-import com.smworks.backendportfolio.helpers.mappers.http.UserHttpResponseMapper;
+import com.smworks.backendportfolio.utils.mappers.http.UserHttpResponseMapper;
 import com.smworks.backendportfolio.interfaces.IUserEntityService;
 import com.smworks.backendportfolio.models.requests.UserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/users")
 public class UserEntityController {
-    @Autowired
     private IUserEntityService userDetailsService;
 
+    @Autowired
     public UserEntityController(IUserEntityService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
