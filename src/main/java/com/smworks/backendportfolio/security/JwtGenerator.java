@@ -1,6 +1,6 @@
-package com.smworks.backendportfolio.utils;
+package com.smworks.backendportfolio.security;
 
-import com.smworks.backendportfolio.configs.SecurityConstants;
+import com.smworks.backendportfolio.security.SecurityConstants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -13,12 +13,12 @@ import java.util.Date;
 @Component
 public class JwtGenerator {
     public String generateToken(Authentication authentication) {
-        String username = authentication.getName();
+        String userId = authentication.getName();
         Date currentDate = new Date();
         Date expiryDate = new Date(currentDate.getTime() + SecurityConstants.JWT_EXPIRATION);
 
         String token = Jwts.builder()
-                .setSubject(username)
+                .setSubject(userId)
                 .setIssuedAt(new Date())
                 .setIssuer("SaneManiacWorks")
                 .setAudience("PortfolioFrontend")

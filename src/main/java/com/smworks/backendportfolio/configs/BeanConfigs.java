@@ -1,5 +1,6 @@
 package com.smworks.backendportfolio.configs;
 
+import com.smworks.backendportfolio.security.JwtAuthEntryPoint;
 import com.smworks.backendportfolio.services.UserDetailsServiceImpl;
 import com.smworks.backendportfolio.services.UserEntityService;
 import org.modelmapper.ModelMapper;
@@ -20,8 +21,4 @@ public class BeanConfigs {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public UserDetailsService userDetailsService(UserEntityService userEntityService) {
-        return new UserDetailsServiceImpl(userEntityService);
-    }
 }

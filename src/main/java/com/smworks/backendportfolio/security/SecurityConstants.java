@@ -1,4 +1,4 @@
-package com.smworks.backendportfolio.configs;
+package com.smworks.backendportfolio.security;
 
 public class SecurityConstants {
     // set expiration to 1 day

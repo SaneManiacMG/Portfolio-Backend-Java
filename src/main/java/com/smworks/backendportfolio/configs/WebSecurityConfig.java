@@ -1,6 +1,7 @@
 package com.smworks.backendportfolio.configs;
 
-import com.smworks.backendportfolio.services.UserAuthenticationService;
+import com.smworks.backendportfolio.security.JwtAuthEntryPoint;
+import com.smworks.backendportfolio.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,23 +10,22 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
     private JwtAuthEntryPoint jwtAuthEntryPoint;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    //private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    public WebSecurityConfig(JwtAuthEntryPoint jwtAuthEntryPoint, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public WebSecurityConfig(JwtAuthEntryPoint jwtAuthEntryPoint) { //, UserDetailsServiceImpl userDetailsService) {
         this.jwtAuthEntryPoint = jwtAuthEntryPoint;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        //this.userDetailsService = userDetailsService;
     }
 
     @Bean
-    public SecurityFilterChain configure(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .exceptionHandling()
@@ -39,7 +39,7 @@ public class WebSecurityConfig {
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
-
+        http.addFilterBefore(jwtAuthenticationFilter(), JwtAuthenticationFilter.class);
         return http.build();
     }
 
@@ -47,6 +47,11 @@ public class WebSecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
             throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter();
     }
 
 }

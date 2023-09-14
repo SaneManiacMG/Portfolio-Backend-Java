@@ -1,5 +1,7 @@
 package com.smworks.backendportfolio.services;
 
+import com.smworks.backendportfolio.models.responses.AuthResponse;
+import com.smworks.backendportfolio.security.JwtGenerator;
 import com.smworks.backendportfolio.utils.PasswordValidator;
 import com.smworks.backendportfolio.interfaces.IUserAuthenticationService;
 import com.smworks.backendportfolio.interfaces.IUserEntityService;
@@ -13,7 +15,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,17 +24,19 @@ public class UserAuthenticationService implements IUserAuthenticationService {
     private IUserEntityService userEntityService;
     private UserRepository userRepository;
     private AuthenticationManager authenticationManager;
+    private JwtGenerator jwtGenerator;
 
     @Autowired
     public UserAuthenticationService(IUserEntityService userEntityService, UserRepository userRepository,
-                                     AuthenticationManager authenticationManager) {
+                                     AuthenticationManager authenticationManager, JwtGenerator jwtGenerator) {
         this.userEntityService = userEntityService;
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
+        this.jwtGenerator = jwtGenerator;
     }
 
     @Override
-    public UserDetails authenticateUser(AuthRequest authRequest) {
+    public AuthResponse authenticateUser(AuthRequest authRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authRequest.getUserId(),
@@ -41,10 +44,8 @@ public class UserAuthenticationService implements IUserAuthenticationService {
                 )
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        if (authentication.getPrincipal() instanceof UserDetails) {
-            return (UserDetails) authentication.getPrincipal();
-        }
-        return null;
+        String token = jwtGenerator.generateToken(authentication);
+        return new AuthResponse(token);
     }
 
     @Override
