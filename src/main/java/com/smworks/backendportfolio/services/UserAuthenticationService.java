@@ -37,6 +37,7 @@ public class UserAuthenticationService implements IUserAuthenticationService {
 
     @Override
     public AuthResponse authenticateUser(AuthRequest authRequest) {
+        System.out.println("Authenticating user: " + authRequest.getUserId());
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authRequest.getUserId(),
@@ -45,6 +46,7 @@ public class UserAuthenticationService implements IUserAuthenticationService {
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtGenerator.generateToken(authentication);
+        System.out.println("User authenticated: " + authRequest.getUserId());
         return new AuthResponse(token);
     }
 
