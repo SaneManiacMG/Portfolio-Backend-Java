@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserEntityController {
     private IUserEntityService userDetailsService;
 
-    @Autowired
     public UserEntityController(IUserEntityService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
