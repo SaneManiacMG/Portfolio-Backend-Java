@@ -28,16 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/authentication/login").permitAll()
                 .antMatchers("/users/**").authenticated()
-                .anyRequest().hasAnyRole("USER", "ADMIN")
-                .and()
-                .httpBasic();
-                /*.and()
-                .formLogin()
-                .loginPage("/authentication/login")
-                .permitAll()
-                .and()
-                .logout()
-                .permitAll();*/
+                .anyRequest().permitAll();
     }
 
     @Bean

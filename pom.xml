@@ -10,14 +10,21 @@
 		<!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.smworks</groupId>
-	<artifactId>backend-portfolio</artifactId>
+	<artifactId>java-backend-portfolio</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>backend-portfolio</name>
-	<description>Backend portfolio</description>
+	<name>java-backend-portfolio</name>
+	<description>Backend Portfolio</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
+
 	<dependencies>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -30,7 +37,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -58,11 +70,6 @@
 			<artifactId>jjwt</artifactId>
 			<version>0.9.1</version>
 		</dependency>
-		<!--<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security	-test</artifactId>
-			<scope>test</scope>
-		</dependency>-->
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-jsr310</artifactId>
@@ -87,20 +94,6 @@
 			<artifactId>springdoc-openapi-ui</artifactId>
 			<version>1.5.12</version>
 		</dependency>
-<!--
-
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-			<version>3.0.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-ui</artifactId>
-			<version>3.0.0</version>
-		</dependency>
--->
 	</dependencies>
 
 	<build>

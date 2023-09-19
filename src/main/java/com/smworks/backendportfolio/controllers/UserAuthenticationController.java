@@ -21,7 +21,6 @@ public class UserAuthenticationController {
 
     @PostMapping("/loginUser")
     public ResponseEntity<Object> authenticateUser(@RequestBody AuthRequest authRequest) {
-        System.out.println("Endpoint hit: /loginUser");
         return UserHttpResponseMapper.mapResponse(userAuthenticationService.authenticateUser(authRequest));
     }
 
