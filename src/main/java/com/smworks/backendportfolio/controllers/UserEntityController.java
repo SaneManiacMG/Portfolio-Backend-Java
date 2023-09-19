@@ -3,7 +3,6 @@ package com.smworks.backendportfolio.controllers;
 import com.smworks.backendportfolio.utils.mappers.http.UserHttpResponseMapper;
 import com.smworks.backendportfolio.interfaces.IUserEntityService;
 import com.smworks.backendportfolio.models.requests.UserRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

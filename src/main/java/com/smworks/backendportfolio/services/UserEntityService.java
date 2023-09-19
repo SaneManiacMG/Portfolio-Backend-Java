@@ -3,15 +3,16 @@ package com.smworks.backendportfolio.services;
 import com.smworks.backendportfolio.utils.mappers.models.UserMapper;
 import com.smworks.backendportfolio.utils.SequenceGenerator;
 import com.smworks.backendportfolio.interfaces.IUserEntityService;
+import com.smworks.backendportfolio.models.entities.UserBase;
 import com.smworks.backendportfolio.models.entities.UserEntity;
-import com.smworks.backendportfolio.models.enums.AccountRole;
 import com.smworks.backendportfolio.models.enums.AccountStatus;
 import com.smworks.backendportfolio.models.requests.UserRequest;
 import com.smworks.backendportfolio.models.responses.UserResponse;
 import com.smworks.backendportfolio.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,18 +20,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserEntityService implements IUserEntityService {
+public class UserEntityService implements IUserEntityService, UserDetailsService {
     private UserRepository userRepository;
     private UserMapper userMapper;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    // TODO: Check and enforce order of identifiers, i.e. email, username, phone number
+    // TODO: Check and enforce order of identifiers, i.e. email, username, phone
 
-    @Autowired
-    public UserEntityService(UserRepository userRepository, UserMapper userMapper, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserEntityService(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
@@ -46,7 +44,7 @@ public class UserEntityService implements IUserEntityService {
         userEntity.setPassword("Not Set");
         userEntity.setDateCreated(LocalDateTime.now());
         userEntity.setDateCreated(LocalDateTime.now());
-        userEntity.setAccountRole(AccountRole.GUEST);
+        userEntity.setAuthorities(null);
         userEntity.setAccountStatus(AccountStatus.UNVERIFIED);
 
         try {
@@ -163,11 +161,9 @@ public class UserEntityService implements IUserEntityService {
 
         if (userRepository.findByEmail(userId) != null) {
             userEntity = userRepository.findByEmail(userId);
-        }
-        else if (userRepository.findByUsername(userId) != null) {
+        } else if (userRepository.findByUsername(userId) != null) {
             userEntity = userRepository.findByUsername(userId);
-        }
-        else if (userRepository.findByPhoneNumber(userId) != null){
+        } else if (userRepository.findByPhoneNumber(userId) != null) {
             userEntity = userRepository.findByPhoneNumber(userId);
         } else {
             return null;
@@ -213,5 +209,15 @@ public class UserEntityService implements IUserEntityService {
         }
 
         return null;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+        UserEntity userEntity = getUserDetails(userId);
+        if (userEntity == null) {
+            throw new UsernameNotFoundException(userId, null);
+        }
+
+        return (UserBase) userEntity;
     }
 }

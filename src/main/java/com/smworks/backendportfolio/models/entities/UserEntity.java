@@ -1,15 +1,17 @@
 package com.smworks.backendportfolio.models.entities;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@Data
 @NoArgsConstructor
 @Entity
+@Getter
+@Setter
 @Table(name = "users")
 public class UserEntity extends UserBase {
     @Column(unique = true)
@@ -23,7 +25,8 @@ public class UserEntity extends UserBase {
     @Column(name = "phone_number", unique = true)
     String phoneNumber;
 
-    public UserEntity(String userId, String password, String username, String email, String firstName, String lastName, String phoneNumber) {
+    public UserEntity(String userId, String password, String username, String email, String firstName, String lastName,
+            String phoneNumber) {
         super(userId, password);
         this.username = username;
         this.email = email;

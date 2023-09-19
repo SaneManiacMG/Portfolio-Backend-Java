@@ -5,7 +5,6 @@ import com.smworks.backendportfolio.interfaces.IUserAuthenticationService;
 import com.smworks.backendportfolio.models.enums.AccountRole;
 import com.smworks.backendportfolio.models.enums.AccountStatus;
 import com.smworks.backendportfolio.models.requests.AuthRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserAuthenticationController {
     private IUserAuthenticationService userAuthenticationService;
 
-    @Autowired
     public UserAuthenticationController(IUserAuthenticationService userAuthenticationService) {
         this.userAuthenticationService = userAuthenticationService;
     }

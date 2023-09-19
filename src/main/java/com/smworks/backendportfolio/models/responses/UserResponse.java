@@ -1,12 +1,13 @@
 package com.smworks.backendportfolio.models.responses;
 
-import com.smworks.backendportfolio.models.enums.AccountRole;
+import com.smworks.backendportfolio.models.entities.Role;
 import com.smworks.backendportfolio.models.enums.AccountStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -19,6 +20,6 @@ public class UserResponse {
     String phoneNumber;
     LocalDateTime dateCreated;
     LocalDateTime dateModified;
-    //AccountRole accountRole;
+    Set<Role> roles;
     AccountStatus accountStatus;
 }

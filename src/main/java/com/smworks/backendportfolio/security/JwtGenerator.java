@@ -1,6 +1,5 @@
 package com.smworks.backendportfolio.security;
 
-import com.smworks.backendportfolio.security.SecurityConstants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
