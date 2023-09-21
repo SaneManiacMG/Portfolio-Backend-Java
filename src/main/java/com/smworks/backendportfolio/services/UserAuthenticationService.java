@@ -60,23 +60,4 @@ public class UserAuthenticationService implements IUserAuthenticationService {
         return null;
     }
 
-    // private UserEntity getUserEntity(String userId) {
-    // UserEntity userByEmail = userRepository.findByEmail(userId);
-    // if (userByEmail != null) {
-    // return userByEmail;
-    // }
-
-    // UserEntity userByUsername = userRepository.findByUsername(userId);
-    // if (userByUsername != null) {
-    // return userByUsername;
-    // }
-
-    // UserEntity userByPhoneNumber = userRepository.findByPhoneNumber(userId);
-    // if (userByPhoneNumber != null) {
-    // return userByPhoneNumber;
-    // }
-
-    // return null;
-    // }
-
 }

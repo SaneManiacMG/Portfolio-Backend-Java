@@ -3,32 +3,34 @@ package com.smworks.backendportfolio.services;
 import com.smworks.backendportfolio.utils.mappers.models.UserMapper;
 import com.smworks.backendportfolio.utils.SequenceGenerator;
 import com.smworks.backendportfolio.interfaces.IUserEntityService;
-import com.smworks.backendportfolio.models.entities.UserBase;
-import com.smworks.backendportfolio.models.entities.UserEntity;
+import com.smworks.backendportfolio.models.entities.*;
 import com.smworks.backendportfolio.models.enums.AccountStatus;
 import com.smworks.backendportfolio.models.requests.UserRequest;
 import com.smworks.backendportfolio.models.responses.UserResponse;
-import com.smworks.backendportfolio.repositories.UserRepository;
+import com.smworks.backendportfolio.repositories.*;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserEntityService implements IUserEntityService, UserDetailsService {
     private UserRepository userRepository;
     private UserMapper userMapper;
+    private RoleRepository roleRepository;
 
     // TODO: Check and enforce order of identifiers, i.e. email, username, phone
 
-    public UserEntityService(UserRepository userRepository, UserMapper userMapper) {
+    public UserEntityService(UserRepository userRepository, UserMapper userMapper, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -39,20 +41,25 @@ public class UserEntityService implements IUserEntityService, UserDetailsService
         }
 
         UserEntity userEntity = userMapper.mapUserRequestToUserEntity(userRequest);
+        Set<Role> authorities = new HashSet<>();
 
         userEntity.setUserId(SequenceGenerator.generateUserId());
         userEntity.setPassword("Not Set");
         userEntity.setDateCreated(LocalDateTime.now());
         userEntity.setDateCreated(LocalDateTime.now());
-        userEntity.setAuthorities(null);
+
+        authorities.add(roleRepository.findByAuthority("ROLE_GUEST").get());
+        userEntity.setAuthorities(authorities);
+
         userEntity.setAccountStatus(AccountStatus.UNVERIFIED);
 
         try {
             userRepository.save(userEntity);
-            return userMapper.mapUserEntityToUserResponse(userEntity);
         } catch (Exception e) {
             return e;
         }
+
+        return userMapper.mapUserEntityToUserResponse(userEntity);
     }
 
     @Override

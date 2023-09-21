@@ -20,6 +20,6 @@ public class UserResponse {
     String phoneNumber;
     LocalDateTime dateCreated;
     LocalDateTime dateModified;
-    Set<Role> roles;
+    Set<Role> authorities;
     AccountStatus accountStatus;
 }
