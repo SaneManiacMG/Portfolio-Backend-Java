@@ -22,7 +22,7 @@ public class UserAuthenticationController {
         return UserHttpResponseMapper.mapResponse(userAuthenticationService.authenticateUser(authRequest));
     }
 
-    @PostMapping("/resetPassword")
+    @PostMapping("/setPassword")
     public ResponseEntity<Object> resetPassword(@RequestBody AuthRequest authRequest) {
         return UserHttpResponseMapper.mapResponse(userAuthenticationService.setPassword(authRequest));
     }

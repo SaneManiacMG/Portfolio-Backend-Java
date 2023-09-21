@@ -13,7 +13,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain filerChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
-                .authorizeRequests(auth -> auth.anyRequest().authenticated())
+                .authorizeRequests(auth -> auth.anyRequest().permitAll())
                 .httpBasic()
                 .and()
                 .build();
