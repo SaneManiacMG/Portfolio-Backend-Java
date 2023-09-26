@@ -11,13 +11,12 @@ import com.smworks.backendportfolio.models.enums.AccountRole;
 import com.smworks.backendportfolio.models.enums.AccountStatus;
 import com.smworks.backendportfolio.models.requests.AuthRequest;
 import com.smworks.backendportfolio.repositories.UserRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,7 +24,6 @@ import java.util.Set;
 
 @Service
 public class UserAuthenticationService implements IUserAuthenticationService {
-    @Autowired
     private AuthenticationManager authenticationManager;
     private JwtGenerator jwtGenerator;
     private UserEntityService userEntityService;
@@ -46,13 +44,17 @@ public class UserAuthenticationService implements IUserAuthenticationService {
     }
 
     @Override
-    public AuthResponse authenticateUser(AuthRequest authRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authRequest.getUserId(),
-                        authRequest.getPassword()));
-        String token = jwtGenerator.generateToken(authentication);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new AuthResponse(token);
+    public Object authenticateUser(AuthRequest authRequest) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(authRequest.getUserId(),
+                            authRequest.getPassword()));
+            String token = jwtGenerator.generateToken(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            return new AuthResponse(token);
+        } catch (AuthenticationException e) {
+            return e;
+        }
     }
 
     @Override
@@ -82,7 +84,7 @@ public class UserAuthenticationService implements IUserAuthenticationService {
         try {
             userRepository.save(userEntity);
         } catch (Exception e) {
-            return e.getMessage();
+            return e;
         }
 
         return "Password set successfully";

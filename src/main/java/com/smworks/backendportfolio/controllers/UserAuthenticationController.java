@@ -1,5 +1,6 @@
 package com.smworks.backendportfolio.controllers;
 
+import com.smworks.backendportfolio.utils.mappers.http.AuthHttpResponseMapper;
 import com.smworks.backendportfolio.utils.mappers.http.UserHttpResponseMapper;
 import com.smworks.backendportfolio.interfaces.IUserAuthenticationService;
 import com.smworks.backendportfolio.models.enums.AccountRole;
@@ -19,7 +20,7 @@ public class UserAuthenticationController {
 
     @PostMapping("/loginUser")
     public ResponseEntity<Object> authenticateUser(@RequestBody AuthRequest authRequest) {
-        return UserHttpResponseMapper.mapResponse(userAuthenticationService.authenticateUser(authRequest));
+        return AuthHttpResponseMapper.mapResponse(userAuthenticationService.authenticateUser(authRequest));
     }
 
     @PostMapping("/setPassword")

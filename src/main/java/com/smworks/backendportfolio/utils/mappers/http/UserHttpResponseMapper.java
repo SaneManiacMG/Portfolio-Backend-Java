@@ -21,7 +21,7 @@ public class UserHttpResponseMapper {
         }
 
         if (response == null) {
-            return new ResponseEntity<>("Invalid Username/Emails or Password", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Invalid Username/Emails or Password", HttpStatus.UNAUTHORIZED);
         }
 
         return new ResponseEntity<>(response, HttpStatus.OK);
