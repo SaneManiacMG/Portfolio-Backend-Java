@@ -23,17 +23,17 @@ public class UserAuthenticationController {
         return AuthHttpResponseMapper.mapResponse(userAuthenticationService.authenticateUser(authRequest));
     }
 
-    @PostMapping("/setPassword")
+    @PutMapping("/setPassword")
     public ResponseEntity<Object> resetPassword(@RequestBody AuthRequest authRequest) {
         return UserHttpResponseMapper.mapResponse(userAuthenticationService.setPassword(authRequest));
     }
 
-    @PostMapping("/changeAccountStatus/{userId}/to/{status}")
+    @PutMapping("/changeAccountStatus/{userId}/to/{status}")
     public ResponseEntity<Object> changeAccountStatus(@PathVariable String userId, @PathVariable AccountStatus status) {
         return UserHttpResponseMapper.mapResponse(userAuthenticationService.changeAccountStatus(userId, status));
     }
 
-    @PostMapping("/changeAccountRole/{userId}/to/{role}")
+    @PutMapping("/changeAccountRole/{userId}/to/{role}")
     public ResponseEntity<Object> changeAccountRole(@PathVariable String userId, @PathVariable AccountRole role) {
         return UserHttpResponseMapper.mapResponse(userAuthenticationService.changeAccountRole(userId, role));
     }
