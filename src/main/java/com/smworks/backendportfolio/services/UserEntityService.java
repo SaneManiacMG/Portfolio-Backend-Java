@@ -152,7 +152,7 @@ public class UserEntityService implements IUserEntityService, UserDetailsService
         return userMapper.mapUserEntityToUserResponse(updatedUser);
     }
 
-    private UserEntity updateUserObject(UserEntity updatedRecord, UserEntity oldRecord) {
+    protected UserEntity updateUserObject(UserEntity updatedRecord, UserEntity oldRecord) {
         oldRecord.setFirstName(updatedRecord.getFirstName());
         oldRecord.setLastName(updatedRecord.getLastName());
         oldRecord.setPhoneNumber(updatedRecord.getPhoneNumber());

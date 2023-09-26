@@ -2,11 +2,8 @@ package com.smworks.backendportfolio.models.entities;
 
 import com.smworks.backendportfolio.models.enums.AccountStatus;
 import lombok.Data;
-
 import javax.persistence.*;
-
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,9 +22,7 @@ public class UserBase implements UserDetails {
 
     @Column(name = "authorities")
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role_junction", 
-            joinColumns = @JoinColumn(name = "user_id"), 
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JoinTable(name = "user_role_junction", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> authorities;
 
     @Enumerated(EnumType.STRING)

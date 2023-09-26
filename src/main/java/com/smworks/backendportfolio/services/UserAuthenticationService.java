@@ -4,6 +4,7 @@ import com.smworks.backendportfolio.models.responses.AuthResponse;
 import com.smworks.backendportfolio.repositories.RoleRepository;
 import com.smworks.backendportfolio.security.JwtGenerator;
 import com.smworks.backendportfolio.utils.PasswordValidator;
+import com.smworks.backendportfolio.utils.mappers.models.UserMapper;
 import com.smworks.backendportfolio.interfaces.IUserAuthenticationService;
 import com.smworks.backendportfolio.models.entities.Role;
 import com.smworks.backendportfolio.models.entities.UserEntity;
@@ -30,17 +31,19 @@ public class UserAuthenticationService implements IUserAuthenticationService {
     private PasswordEncoder passwordEncoder;
     private UserRepository userRepository;
     private RoleRepository roleRepository;
+    private UserMapper userMapper;
 
     public UserAuthenticationService(UserRepository userRepository,
             AuthenticationManager authenticationManager, JwtGenerator jwtGenerator,
             UserEntityService userEntityService, PasswordEncoder passwordEncoder,
-            RoleRepository roleRepository) {
+            RoleRepository roleRepository, UserMapper userMapper) {
         this.authenticationManager = authenticationManager;
         this.jwtGenerator = jwtGenerator;
         this.userEntityService = userEntityService;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.userMapper = userMapper;
     }
 
     @Override
@@ -72,8 +75,8 @@ public class UserAuthenticationService implements IUserAuthenticationService {
         userEntity.setPassword(passwordEncoder.encode(authRequest.getPassword()));
         userEntity.setAccountStatus(AccountStatus.ACTIVE);
 
-        Role userRole = roleRepository.findByAuthority("ROLE_USER").get();
-        Role guestRole = roleRepository.findByAuthority("ROLE_GUEST").get();
+        Role userRole = roleRepository.findByAuthority("ROLE_" + AccountRole.USER.name()).get();
+        Role guestRole = roleRepository.findByAuthority("ROLE_" + AccountRole.GUEST.name()).get();
 
         Set<Role> authorities = userEntity.getAuthorities();
         authorities.remove(guestRole);
@@ -92,12 +95,42 @@ public class UserAuthenticationService implements IUserAuthenticationService {
 
     @Override
     public Object changeAccountStatus(String userId, AccountStatus status) {
-        return null;
+        UserEntity userEntity = userEntityService.getUserDetails(userId);
+        if (userEntity == null) {
+            return null;
+        }
+
+        userEntity.setAccountStatus(status);
+        userEntity.setDateModified(LocalDateTime.now());
+
+        try {
+            userRepository.save(userEntity);
+        } catch (Exception e) {
+            return e;
+        }
+
+        return userMapper.mapUserEntityToUserResponse(userEntity);
     }
 
     @Override
     public Object changeAccountRole(String userId, AccountRole role) {
-        return null;
+        UserEntity userEntity = userEntityService.getUserDetails(userId);
+        if (userEntity == null) {
+            return null;
+        }
+
+        Role userRole = roleRepository.findByAuthority("ROLE_" + role.name()).get();
+        userEntity.getAuthorities().clear();
+        userEntity.getAuthorities().add(userRole);
+        userEntity.setDateModified(LocalDateTime.now());
+
+        try {
+            userRepository.save(userEntity);
+        } catch (Exception e) {
+            return e;
+        }
+
+        return userMapper.mapUserEntityToUserResponse(userEntity);
     }
 
 }

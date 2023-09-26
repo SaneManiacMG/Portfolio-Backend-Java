@@ -26,4 +26,8 @@ public class UserMapper {
     public AuthResponse mapUserEntityToAuthResponse(UserEntity userEntity) {
         return modelMapper.map(userEntity, AuthResponse.class);
     }
+
+    public UserRequest mapUserEntityToUserRequest(UserEntity userEntity) {
+        return modelMapper.map(userEntity, UserRequest.class);
+    }
 }
