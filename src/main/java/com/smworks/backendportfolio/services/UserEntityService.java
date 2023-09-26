@@ -225,6 +225,6 @@ public class UserEntityService implements IUserEntityService, UserDetailsService
             throw new UsernameNotFoundException(userId, null);
         }
 
-        return (UserBase) userEntity;
+        return userEntity;
     }
 }
