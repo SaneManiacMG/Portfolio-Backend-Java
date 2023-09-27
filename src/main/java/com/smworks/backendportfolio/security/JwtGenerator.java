@@ -7,12 +7,20 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import com.smworks.backendportfolio.models.entities.UserBase;
+
 import java.util.Date;
 
 @Component
 public class JwtGenerator {
     public String generateToken(Authentication authentication) {
-        String userId = authentication.getName();
+        String userId = null;
+
+        if (authentication.getPrincipal() instanceof UserBase) {
+            UserBase user = (UserBase) authentication.getPrincipal();
+            userId = user.getUserId();
+        }
+        
         Date currentDate = new Date();
         Date expiryDate = new Date(currentDate.getTime() + SecurityConstants.JWT_EXPIRATION);
 
