@@ -6,26 +6,31 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-
+import com.smworks.backendportfolio.models.entities.Role;
 import com.smworks.backendportfolio.models.entities.UserBase;
-
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtGenerator {
     public String generateToken(Authentication authentication) {
-        String userId = null;
+        String userId = authentication.getName();
+        Set<Role> roles = new HashSet<>();
 
         if (authentication.getPrincipal() instanceof UserBase) {
             UserBase user = (UserBase) authentication.getPrincipal();
-            userId = user.getUserId();
+            roles = user.getAuthorities().stream().map(role -> new Role(role.getAuthority()))
+                    .collect(Collectors.toSet());
         }
-        
+
         Date currentDate = new Date();
         Date expiryDate = new Date(currentDate.getTime() + SecurityConstants.JWT_EXPIRATION);
 
         String token = Jwts.builder()
                 .setSubject(userId)
+                .claim("roles", roles)
                 .setIssuedAt(new Date())
                 .setIssuer("SaneManiacWorks")
                 .setAudience("PortfolioFrontend")

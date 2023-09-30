@@ -48,9 +48,14 @@ public class UserAuthenticationService implements IUserAuthenticationService {
 
     @Override
     public Object authenticateUser(AuthRequest authRequest) {
+        UserEntity userEntity = userEntityService.getUserDetails(authRequest.getUserId());
+        if (userEntity == null) {
+            return null;
+        }
+
         try {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authRequest.getUserId(),
+                    new UsernamePasswordAuthenticationToken(userEntity.getUserId(),
                             authRequest.getPassword()));
             String token = jwtGenerator.generateToken(authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);

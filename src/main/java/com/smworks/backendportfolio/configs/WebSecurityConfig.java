@@ -14,8 +14,8 @@ public class WebSecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeRequests(auth -> auth
-                        .antMatchers("/loginUser", "/setPassword", "/createUser").permitAll()
-                        .anyRequest().hasAnyRole("USER", "ADMIN", "SUPER_ADMIN"))
+                        .antMatchers("**/loginUser", "**/setPassword", "**/createUser").permitAll()
+                        .antMatchers("**/users/**").hasAnyRole("USER", "ADMIN", "SUPER_ADMIN"))
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -220,11 +221,23 @@ public class UserEntityService implements IUserEntityService, UserDetailsService
 
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        UserEntity userEntity = getUserDetails(userId);
-        if (userEntity == null) {
+        UserEntity userEntity = findUserByUserId(userId);
+        if (findUserByUserId(userId) == null) {
             throw new UsernameNotFoundException(userId, null);
         }
 
         return userEntity;
     }
+
+    private UserEntity findUserByUserId(String userId) {
+        Optional<UserEntity> userEntity = userRepository.findById(userId);
+        if (!userEntity.isPresent()) {
+            return null;
+        }
+
+        System.out.println(userEntity.get());
+
+        return userEntity.get();
+    }
+
 }

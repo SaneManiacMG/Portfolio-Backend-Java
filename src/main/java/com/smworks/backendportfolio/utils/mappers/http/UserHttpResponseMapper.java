@@ -3,6 +3,7 @@ package com.smworks.backendportfolio.utils.mappers.http;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class UserHttpResponseMapper {
             return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         }
 
-        if (response == null) {
+        if (response == null || response instanceof UsernameNotFoundException) {
             return new ResponseEntity<>("Invalid Username/Emails or Password", HttpStatus.UNAUTHORIZED);
         }
 
