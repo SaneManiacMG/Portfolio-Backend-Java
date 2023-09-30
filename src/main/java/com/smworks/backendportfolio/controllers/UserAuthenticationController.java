@@ -33,8 +33,13 @@ public class UserAuthenticationController {
         return UserHttpResponseMapper.mapResponse(userAuthenticationService.changeAccountStatus(userId, status));
     }
 
-    @PutMapping("/changeAccountRole/{userId}/to/{role}")
-    public ResponseEntity<Object> changeAccountRole(@PathVariable String userId, @PathVariable AccountRole role) {
-        return UserHttpResponseMapper.mapResponse(userAuthenticationService.changeAccountRole(userId, role));
+    @PutMapping("/removeAccountRole/{role}/from/{userId}")
+    public ResponseEntity<Object> removeAccountRole(@PathVariable String userId, @PathVariable AccountRole role) {
+        return UserHttpResponseMapper.mapResponse(userAuthenticationService.removeAccountRole(userId, role));
+    }
+
+    @PutMapping("/addAccountRole/{role}/to/{userId}")
+    public ResponseEntity<Object> addAccountRole(@PathVariable String userId, @PathVariable AccountRole role) {
+        return UserHttpResponseMapper.mapResponse(userAuthenticationService.addAccountRole(userId, role));
     }
 }

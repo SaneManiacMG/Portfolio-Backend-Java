@@ -8,8 +8,7 @@ import com.smworks.backendportfolio.utils.mappers.models.UserMapper;
 import com.smworks.backendportfolio.interfaces.IUserAuthenticationService;
 import com.smworks.backendportfolio.models.entities.Role;
 import com.smworks.backendportfolio.models.entities.UserEntity;
-import com.smworks.backendportfolio.models.enums.AccountRole;
-import com.smworks.backendportfolio.models.enums.AccountStatus;
+import com.smworks.backendportfolio.models.enums.*;
 import com.smworks.backendportfolio.models.requests.AuthRequest;
 import com.smworks.backendportfolio.repositories.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -84,7 +83,11 @@ public class UserAuthenticationService implements IUserAuthenticationService {
         Role guestRole = roleRepository.findByAuthority("ROLE_" + AccountRole.GUEST.name()).get();
 
         Set<Role> authorities = userEntity.getAuthorities();
-        authorities.remove(guestRole);
+
+        if (authorities.contains(guestRole)) {
+            authorities.remove(guestRole);
+        }
+
         authorities.add(userRole);
 
         userEntity.setDateModified(LocalDateTime.now());
@@ -95,7 +98,7 @@ public class UserAuthenticationService implements IUserAuthenticationService {
             return e;
         }
 
-        return "Password set successfully";
+        return "Password set for user " + authRequest.getUserId() + " successfully";
     }
 
     @Override
@@ -118,14 +121,34 @@ public class UserAuthenticationService implements IUserAuthenticationService {
     }
 
     @Override
-    public Object changeAccountRole(String userId, AccountRole role) {
+    public Object removeAccountRole(String userId, AccountRole role) {
+        UserEntity userEntity = userEntityService.getUserDetails(userId);
+        if (userEntity == null) {
+            return null;
+        }
+
+        Set<Role> authorities = userEntity.getAuthorities();
+        Role userRole = roleRepository.findByAuthority("ROLE_" + role.name()).get();
+        authorities.remove(userRole);
+        userEntity.setDateModified(LocalDateTime.now());
+
+        try {
+            userRepository.save(userEntity);
+        } catch (Exception e) {
+            return e;
+        }
+
+        return role.name() + " role removed successfully for " + userId;
+    }
+
+    @Override
+    public Object addAccountRole(String userId, AccountRole role) {
         UserEntity userEntity = userEntityService.getUserDetails(userId);
         if (userEntity == null) {
             return null;
         }
 
         Role userRole = roleRepository.findByAuthority("ROLE_" + role.name()).get();
-        userEntity.getAuthorities().clear();
         userEntity.getAuthorities().add(userRole);
         userEntity.setDateModified(LocalDateTime.now());
 
@@ -135,7 +158,7 @@ public class UserAuthenticationService implements IUserAuthenticationService {
             return e;
         }
 
-        return userMapper.mapUserEntityToUserResponse(userEntity);
+        return role.name() + " role added successfully for " + userId;
     }
 
 }

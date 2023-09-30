@@ -11,5 +11,7 @@ public interface IUserAuthenticationService {
 
     Object changeAccountStatus(String userId, AccountStatus status);
 
-    Object changeAccountRole(String userId, AccountRole role);
+    Object removeAccountRole(String userId, AccountRole role);
+
+    Object addAccountRole(String userId, AccountRole role);
 }

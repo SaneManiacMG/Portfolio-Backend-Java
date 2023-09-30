@@ -22,7 +22,7 @@ public class UserHttpResponseMapper {
         }
 
         if (response == null || response instanceof UsernameNotFoundException) {
-            return new ResponseEntity<>("Invalid Username/Emails or Password", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
         }
 
         return new ResponseEntity<>(response, HttpStatus.OK);

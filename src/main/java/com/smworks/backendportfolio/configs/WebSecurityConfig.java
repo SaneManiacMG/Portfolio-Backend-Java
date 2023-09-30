@@ -15,7 +15,10 @@ public class WebSecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeRequests(auth -> auth
                         .antMatchers("**/loginUser", "**/setPassword", "**/createUser").permitAll()
-                        .antMatchers("**/users/**").hasAnyRole("USER", "ADMIN", "SUPER_ADMIN"))
+                        .antMatchers("**/users/**").hasAnyRole("USER", "ADMIN", "SUPER_ADMIN")
+                        .antMatchers("**accountRole/**").hasAnyRole("ADMIN", "SUPER_ADMIN"))
+                .authorizeRequests(auth -> auth
+                        .antMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll())
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
