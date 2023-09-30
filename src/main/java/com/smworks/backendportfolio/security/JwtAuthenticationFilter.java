@@ -7,9 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import com.smworks.backendportfolio.services.UserEntityService;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -29,9 +27,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             FilterChain filterChain) throws ServletException, IOException {
         String token = getTokenFromRequest(request);
         if (StringUtils.hasText(token) && jwtGenerator.validateToken(token)) {
-            String userId = jwtGenerator.getUserIdFromJWT(token);
+            String user = jwtGenerator.getUserIdFromJWT(token);
 
-            UserDetails userDetails = userEntityService.loadUserByUsername(userId);
+            UserDetails userDetails = userEntityService.loadUserByUsername(user);
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                     userDetails, null, userDetails.getAuthorities());
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

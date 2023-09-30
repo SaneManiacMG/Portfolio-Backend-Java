@@ -1,5 +1,6 @@
 package com.smworks.backendportfolio.interfaces;
 
+import com.smworks.backendportfolio.models.entities.UserEntity;
 import com.smworks.backendportfolio.models.requests.UserRequest;
 import com.smworks.backendportfolio.models.responses.UserResponse;
 
@@ -15,4 +16,6 @@ public interface IUserEntityService {
     Object deleteUserEntity(String userId);
 
     List<UserResponse> getAllUserEntities();
+
+    UserEntity findUserByUserId(String userId);
 }

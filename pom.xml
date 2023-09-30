@@ -15,7 +15,7 @@
 	<name>java-backend-portfolio</name>
 	<description>Backend Portfolio</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 	</properties>
 
 	<dependencies>

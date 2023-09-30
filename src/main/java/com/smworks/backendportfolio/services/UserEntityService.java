@@ -27,6 +27,7 @@ public class UserEntityService implements IUserEntityService, UserDetailsService
     private RoleRepository roleRepository;
 
     // TODO: Check and enforce order of identifiers, i.e. email, username, phone
+    // TODO: Review my return statement for finding a speicific user
 
     public UserEntityService(UserRepository userRepository, UserMapper userMapper, RoleRepository roleRepository) {
         this.userRepository = userRepository;
@@ -220,16 +221,17 @@ public class UserEntityService implements IUserEntityService, UserDetailsService
     }
 
     @Override
-    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        UserEntity userEntity = findUserByUserId(userId);
-        if (findUserByUserId(userId) == null) {
-            throw new UsernameNotFoundException(userId, null);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserEntity userEntity = getUserDetails(username);
+        if (findUserByUserId(userEntity.getUserId()) == null) {
+            throw new UsernameNotFoundException("Username not found", null);
         }
 
         return userEntity;
     }
 
-    private UserEntity findUserByUserId(String userId) {
+    @Override
+    public UserEntity findUserByUserId(String userId) {
         Optional<UserEntity> userEntity = userRepository.findById(userId);
         if (!userEntity.isPresent()) {
             return null;
