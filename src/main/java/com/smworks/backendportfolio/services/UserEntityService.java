@@ -223,7 +223,7 @@ public class UserEntityService implements IUserEntityService, UserDetailsService
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity userEntity = getUserDetails(username);
-        if (findUserByUserId(userEntity.getUserId()) == null) {
+        if (userEntity == null) {
             throw new UsernameNotFoundException("Username not found", null);
         }
 

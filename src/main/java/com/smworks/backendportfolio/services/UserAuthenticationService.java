@@ -54,7 +54,7 @@ public class UserAuthenticationService implements IUserAuthenticationService {
 
         try {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(userEntity.getUserId(),
+                    new UsernamePasswordAuthenticationToken(authRequest.getUserId(),
                             authRequest.getPassword()));
             String token = jwtGenerator.generateToken(authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -160,5 +160,4 @@ public class UserAuthenticationService implements IUserAuthenticationService {
 
         return role.name() + " role added successfully for " + userId;
     }
-
 }
