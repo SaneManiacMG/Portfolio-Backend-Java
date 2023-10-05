@@ -16,6 +16,9 @@ import java.util.stream.Collectors;
 @Component
 public class JwtGenerator {
     public String generateToken(Authentication authentication) {
+
+        // TODO: Make the subject the user id instead of username
+
         String userId = authentication.getName();
         Set<Role> roles = new HashSet<>();
 

@@ -12,4 +12,6 @@ public class AuthHttpResponseMapper {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    // TODO: Add handling for AuthenticationCredentialsNotFoundException
 }
