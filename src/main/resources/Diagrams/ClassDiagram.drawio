@@ -1,0 +1,58 @@
+<mxfile host="65bd71144e">
+    <diagram id="8vR6ErcGp71Z78zTBgOV" name="Page-1">
+        <mxGraphModel dx="831" dy="662" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="6" value="UserBase" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=29;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="40" width="360" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="- userId: String&lt;br style=&quot;padding: 0px; margin: 0px;&quot;&gt;- password: String&lt;br style=&quot;padding: 0px; margin: 0px;&quot;&gt;- dateCreated: DateTime&lt;br style=&quot;padding: 0px; margin: 0px;&quot;&gt;- dateModified: DateTime&lt;br style=&quot;padding: 0px; margin: 0px;&quot;&gt;- authorities: Set&amp;lt;Role&amp;gt;&lt;br style=&quot;padding: 0px; margin: 0px;&quot;&gt;- accountStatus: enum&amp;lt;AccountStatus&amp;gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="6" vertex="1">
+                    <mxGeometry y="29" width="360" height="131" as="geometry"/>
+                </mxCell>
+                <mxCell id="37" value="" style="edgeStyle=none;html=1;fontFamily=Helvetica;fontColor=#F0F0F0;" edge="1" parent="1" source="9" target="8">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="UserEntity" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=29;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="280" width="360" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="- username: String&lt;br&gt;- firstName: String&lt;br&gt;- lastName: String&lt;br&gt;- email: String&lt;br&gt;- phoneNumber: String" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="9" vertex="1">
+                    <mxGeometry y="29" width="360" height="91" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="Role" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=29;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="490" y="80" width="240" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="- roleId: int&lt;br&gt;- authority: String" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="12" vertex="1">
+                    <mxGeometry y="29" width="240" height="51" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="UserEntityController" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+                    <mxGeometry x="40" y="480" width="360" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" value="- userEntityService: IUserEntityService" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="18">
+                    <mxGeometry y="26" width="360" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="20" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="18">
+                    <mxGeometry y="52" width="360" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="21" value="+ createUserAccount(UserRequest): ResponseEntity&lt;Object&gt;&#10;+ getUserDetails(String): ResponseEntity&lt;Object&gt;&#10;+ updateUserDetails(UserRequest): ResponseEntity&lt;Object&gt;&#10;+ deleteUserDetails(String): ResponseEntity&lt;Object&gt;&#10;+ getAllUsers(): ResponseEntity&lt;Object&gt;&#10;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="18">
+                    <mxGeometry y="60" width="360" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="25" value="UserAuthenticationController" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fontFamily=Helvetica;fontColor=#F0F0F0;" vertex="1" parent="1">
+                    <mxGeometry x="480" y="480" width="360" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="26" value="- userAuthenticationService: IUserAuthenticationServiec" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontFamily=Helvetica;fontColor=#F0F0F0;" vertex="1" parent="25">
+                    <mxGeometry y="26" width="360" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="27" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontFamily=Helvetica;fontColor=#F0F0F0;" vertex="1" parent="25">
+                    <mxGeometry y="52" width="360" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="28" value="+ authenticateUser(AuthRequest): ResponseEntity&lt;Object&gt;&#10;+ resetPassword(AuthRequest): ResponseEntity&lt;Object&gt;&#10;+ changeAccountStatus(AccountStatus): ResponseEntity&lt;Object&gt;&#10;+ removeAccountRole(AccountRole): ResponseEntity&lt;Object&gt;&#10;+ addAccountRole(AccountRole): ResponseEntity&lt;Object&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontFamily=Helvetica;fontColor=#F0F0F0;" vertex="1" parent="25">
+                    <mxGeometry y="60" width="360" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="36" value="" style="edgeStyle=none;html=1;fontFamily=Helvetica;fontColor=#F0F0F0;" edge="1" parent="1" source="14" target="8">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

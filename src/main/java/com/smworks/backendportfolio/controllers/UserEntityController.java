@@ -32,7 +32,7 @@ public class UserEntityController {
     }
 
     @DeleteMapping("/deleteUser/{userId}")
-    public Object deleteUserDetails(@PathVariable String userId) {
+    public ResponseEntity<Object> deleteUserDetails(@PathVariable String userId) {
         return UserHttpResponseMapper.mapResponse(userDetailsService.deleteUserEntity(userId));
     }
 
