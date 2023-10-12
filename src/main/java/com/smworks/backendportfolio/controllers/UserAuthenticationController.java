@@ -6,6 +6,8 @@ import com.smworks.backendportfolio.interfaces.IUserAuthenticationService;
 import com.smworks.backendportfolio.models.enums.AccountRole;
 import com.smworks.backendportfolio.models.enums.AccountStatus;
 import com.smworks.backendportfolio.models.requests.AuthRequest;
+import com.smworks.backendportfolio.models.requests.PasswordResetRequest;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,8 +26,8 @@ public class UserAuthenticationController {
     }
 
     @PutMapping("/setPassword")
-    public ResponseEntity<Object> resetPassword(@RequestBody AuthRequest authRequest) {
-        return UserHttpResponseMapper.mapResponse(userAuthenticationService.setPassword(authRequest));
+    public ResponseEntity<Object> resetPassword(@RequestBody PasswordResetRequest passwordResetRequest) {
+        return UserHttpResponseMapper.mapResponse(userAuthenticationService.setPassword(passwordResetRequest));
     }
 
     @PutMapping("/changeAccountStatus/{userId}/to/{status}")

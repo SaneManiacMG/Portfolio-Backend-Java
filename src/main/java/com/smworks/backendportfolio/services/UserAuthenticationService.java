@@ -10,6 +10,7 @@ import com.smworks.backendportfolio.models.entities.Role;
 import com.smworks.backendportfolio.models.entities.UserEntity;
 import com.smworks.backendportfolio.models.enums.*;
 import com.smworks.backendportfolio.models.requests.AuthRequest;
+import com.smworks.backendportfolio.models.requests.PasswordResetRequest;
 import com.smworks.backendportfolio.repositories.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -65,18 +66,20 @@ public class UserAuthenticationService implements IUserAuthenticationService {
     }
 
     @Override
-    public Object setPassword(AuthRequest authRequest) {
-        List<String> errors = PasswordValidator.validatePassword(authRequest.getPassword());
+    public Object setPassword(PasswordResetRequest passwordResetRequest) {
+        // TODO: Modify password reset method, it currently just resets the password
+        // without checking the current password
+        List<String> errors = PasswordValidator.validatePassword(passwordResetRequest.getNewPassword());
         if (!errors.isEmpty()) {
             return errors;
         }
 
-        UserEntity userEntity = userEntityService.getUserDetails(authRequest.getUserId());
+        UserEntity userEntity = userEntityService.getUserDetails(passwordResetRequest.getUserId());
         if (userEntity == null) {
             return null;
         }
 
-        userEntity.setPassword(passwordEncoder.encode(authRequest.getPassword()));
+        userEntity.setPassword(passwordEncoder.encode(passwordResetRequest.getNewPassword()));
         userEntity.setAccountStatus(AccountStatus.ACTIVE);
 
         Role userRole = roleRepository.findByAuthority("ROLE_" + AccountRole.USER.name()).get();
@@ -98,7 +101,7 @@ public class UserAuthenticationService implements IUserAuthenticationService {
             return e;
         }
 
-        return "Password set for user " + authRequest.getUserId() + " successfully";
+        return "Password set for user " + passwordResetRequest.getUserId() + " successfully";
     }
 
     @Override
