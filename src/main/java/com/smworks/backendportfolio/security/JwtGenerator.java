@@ -19,7 +19,7 @@ public class JwtGenerator {
 
         // TODO: Make the subject the user id instead of username
 
-        String userId = authentication.getName();
+        String userId = ((UserBase) authentication.getPrincipal()).getUserId();
         Set<Role> roles = new HashSet<>();
 
         if (authentication.getPrincipal() instanceof UserBase) {
@@ -30,7 +30,7 @@ public class JwtGenerator {
 
         Date currentDate = new Date();
         Date expiryDate = new Date(currentDate.getTime() + SecurityConstants.JWT_EXPIRATION);
-
+        
         String token = Jwts.builder()
                 .setSubject(userId)
                 .claim("roles", roles)

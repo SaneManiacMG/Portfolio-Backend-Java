@@ -32,3 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 .history/
+Portfolio_DB.session.sql
