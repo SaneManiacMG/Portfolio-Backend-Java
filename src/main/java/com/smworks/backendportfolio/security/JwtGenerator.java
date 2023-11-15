@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class JwtGenerator {
     public String generateToken(Authentication authentication) {
 
-        // TODO: Make the subject the user id instead of username
+        // TODO: Remove roleId from Role mapping for JWT Generation
 
         String userId = ((UserBase) authentication.getPrincipal()).getUserId();
         Set<Role> roles = new HashSet<>();
