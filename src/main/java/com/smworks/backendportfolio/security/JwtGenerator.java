@@ -7,7 +7,6 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
-import com.smworks.backendportfolio.models.entities.Role;
 import com.smworks.backendportfolio.models.entities.UserBase;
 import java.util.Date;
 import java.util.HashSet;
@@ -17,9 +16,6 @@ import java.util.stream.Collectors;
 @Component
 public class JwtGenerator {
     public String generateToken(Authentication authentication) {
-
-        // TODO: Remove roleId from Role mapping for JWT Generation
-
         String userId = ((UserBase) authentication.getPrincipal()).getUserId();
         Set<String>authorities = new HashSet<>();
 
