@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 import com.smworks.backendportfolio.models.entities.Role;
 import com.smworks.backendportfolio.models.entities.UserBase;
@@ -20,11 +21,11 @@ public class JwtGenerator {
         // TODO: Remove roleId from Role mapping for JWT Generation
 
         String userId = ((UserBase) authentication.getPrincipal()).getUserId();
-        Set<Role> roles = new HashSet<>();
+        Set<String>authorities = new HashSet<>();
 
         if (authentication.getPrincipal() instanceof UserBase) {
             UserBase user = (UserBase) authentication.getPrincipal();
-            roles = user.getAuthorities().stream().map(role -> new Role(role.getAuthority()))
+            authorities = user.getAuthorities().stream().map(GrantedAuthority :: getAuthority)
                     .collect(Collectors.toSet());
         }
 
@@ -33,11 +34,11 @@ public class JwtGenerator {
         
         String token = Jwts.builder()
                 .setSubject(userId)
-                .claim("roles", roles)
+                .claim("authorities", authorities)
                 .setIssuedAt(new Date())
+                .setExpiration(expiryDate)
                 .setIssuer("SaneManiacWorks")
                 .setAudience("PortfolioFrontend")
-                .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS256, SecurityConstants.JWT_SECRET)
                 .compact();
         return token;
