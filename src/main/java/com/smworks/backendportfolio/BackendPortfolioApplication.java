@@ -9,7 +9,6 @@ import com.smworks.backendportfolio.repositories.RoleRepository;
 
 @SpringBootApplication
 public class BackendPortfolioApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(BackendPortfolioApplication.class, args);
     }
