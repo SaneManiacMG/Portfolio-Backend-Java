@@ -203,19 +203,15 @@ public class UserEntityService implements IUserEntityService, UserDetailsService
         UserEntity userEntity;
 
         userEntity = userRepository.findByEmail(userId);
-        if (userEntity != null) {
-            return userEntity;
-        }
+        if (userEntity != null) return userEntity;
 
         userEntity = userRepository.findByUsername(userId);
-        if (userEntity != null) {
-            return userEntity;
-        }
+        if (userEntity != null) return userEntity;
 
         userEntity = userRepository.findByPhoneNumber(userId);
-        if (userEntity != null) {
-            return userEntity;
-        }
+        if (userEntity != null) return userEntity;
+
+
 
         return null;
     }
