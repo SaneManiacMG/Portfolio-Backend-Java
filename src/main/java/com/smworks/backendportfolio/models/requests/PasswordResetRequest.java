@@ -1,6 +1,6 @@
 package com.smworks.backendportfolio.models.requests;
 
-import io.micrometer.core.lang.NonNull;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PasswordResetRequest {
-    @NonNull
+    @NotNull
     private String userId;
     private String currentPassword;
     private String newPassword;
