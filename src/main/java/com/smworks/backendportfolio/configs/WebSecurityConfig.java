@@ -13,12 +13,12 @@ public class WebSecurityConfig {
     public SecurityFilterChain filerChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
-                .authorizeRequests(auth -> auth
-                        .antMatchers("**/loginUser", "**/setPassword", "**/createUser").permitAll()
-                        .antMatchers("**/users/**").hasAnyRole("USER", "ADMIN", "SUPER_ADMIN")
-                        .antMatchers("**accountRole/**").hasAnyRole("ADMIN", "SUPER_ADMIN"))
-                .authorizeRequests(auth -> auth
-                        .antMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("**/loginUser", "**/setPassword", "**/createUser").permitAll()
+                        .requestMatchers("**/users/**").hasAnyRole("USER", "ADMIN", "SUPER_ADMIN")
+                        .requestMatchers("**accountRole/**").hasAnyRole("ADMIN", "SUPER_ADMIN"))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll())
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

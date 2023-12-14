@@ -233,7 +233,7 @@ public class UserEntityService implements IUserEntityService, UserDetailsService
     @Override
     public UserEntity findUserByUserId(String userId) {
         Optional<UserEntity> userEntity = userRepository.findById(userId);
-        if (!userEntity.isPresent()) {
+        if (userEntity.isEmpty()) {
             return null;
         }
 

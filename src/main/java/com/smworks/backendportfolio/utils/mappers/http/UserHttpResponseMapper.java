@@ -9,12 +9,12 @@ import java.util.List;
 
 public class UserHttpResponseMapper {
     public static ResponseEntity<Object> mapResponse(Object response) {
-        if (response instanceof DataIntegrityViolationException) {
-            return new ResponseEntity<>(((DataIntegrityViolationException) response).getMessage(), HttpStatus.CONFLICT);
+        if (response instanceof DataIntegrityViolationException exception) {
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.CONFLICT);
         }
 
-        if (response instanceof Exception) {
-            return new ResponseEntity<>(((Exception) response).getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        if (response instanceof Exception exception) {
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         if (response instanceof List) {
