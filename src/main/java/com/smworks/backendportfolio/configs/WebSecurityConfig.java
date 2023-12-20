@@ -16,6 +16,7 @@ public class WebSecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.disable())
+                .securityMatcher("/api/**")
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/users/**")
                                 .hasAnyRole("USER", "ADMIN", "SUPER_ADMIN")
