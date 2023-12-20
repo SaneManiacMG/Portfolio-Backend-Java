@@ -2,7 +2,7 @@ package com.smworks.backendportfolio.models.entities;
 
 import com.smworks.backendportfolio.models.enums.AccountStatus;
 import lombok.Data;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
 import java.util.HashSet;

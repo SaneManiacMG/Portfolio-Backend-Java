@@ -53,6 +53,8 @@ public class JwtGenerator {
             Jwts.parser().setSigningKey(SecurityConstants.JWT_SECRET).parseClaimsJws(token);
             return true;
         } catch (Exception e) {
+            // TODO: handle exception, currently just prints out Invalid JWT token.
+            
             throw new AuthenticationCredentialsNotFoundException("Invalid JWT token");
         }
     }
